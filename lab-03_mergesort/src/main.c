@@ -104,4 +104,8 @@ void print_array(const char* type, void* array, int elements)
 				}
 			}
 	}
+	else
+	{
+		printf("\n");
+	}
 }
