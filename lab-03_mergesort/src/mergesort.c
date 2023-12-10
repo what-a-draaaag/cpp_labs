@@ -4,13 +4,13 @@
 
 
 void mergesort(void* array, size_t elements, 
-	size_t element_size, int (comparator)(const void*, const void*))
+	size_t element_size, int (*comparator)(const void *, const void *))
 {
 	merge_sort(array, element_size, 0, elements, comparator);
 }
 
 void merge_sort(void* array, size_t element_size, int left, 
-	int right, int (comparator)(const void*, const void*))
+	int right, int (*comparator)(const void *, const void *))
 {
 	if (left >= right - 1)
 	{
@@ -23,7 +23,7 @@ void merge_sort(void* array, size_t element_size, int left,
 }
 
 void merge(void* array, size_t element_size, int left, int mid, int right,
-	int (comparator)(const void*, const void*))
+	int (*comparator)(const void *, const void *))
 {
 	char* a = malloc((right - left) * element_size);
 	assert(a != NULL);
@@ -33,7 +33,7 @@ void merge(void* array, size_t element_size, int left, int mid, int right,
 	int i = 0;
 	while(iter1 < mid || iter2 < right)
 	{
-		if ((iter1 < mid && comparator(p + iter1 * element_size, p + iter2 * element_size) <= 0) || iter2 >= right)
+		if (iter2 >= right || (iter1 < mid && comparator(p + iter1 * element_size, p + iter2 * element_size) <= 0))
 		{
 			copy(p + iter1 * element_size, a + i * element_size, element_size);
 			iter1++;
@@ -54,14 +54,10 @@ void merge(void* array, size_t element_size, int left, int mid, int right,
 	free(a);
 }
 
-void copy(void* source, void* destination, size_t element_size)
+void copy(char* source, char* destination, size_t element_size)
 {
-	char* elem1 = source;
-	char* elem2 = destination;
 	for (int i = 0; i < element_size; i++)
 	{
-		*elem2 = *elem1;
-		elem1++;
-		elem2++;
+		*(destination + i) = *(source + i);
 	}
 }

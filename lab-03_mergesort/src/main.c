@@ -16,9 +16,9 @@ int char_comparator(const void* a, const void* b)
 	return *(const char*)a - *(const char*)b;
 }
 
-int str_comparator(const void* a, const void* b)
+int str_comparator(const void *a, const void *b)
 {
-	return strcmp(*(const char**) a, *(const char**) b);
+	return strcmp(*(const char**)a, *(const char**)b);
 }
 
 
@@ -40,18 +40,7 @@ int main(int argc, void** argv)
 			array[i] = atoi(argv[i + 2]);
 		}
 		mergesort(array, elements, element_size, int_comparator);
-		for (int i = 0; i < elements; i++)
-		{
-			printf("%d", array[i]);
-			if (i == elements - 1)
-			{
-				printf("\n");
-			}
-			else
-			{
-				printf(" ");
-			}
-		}
+		print_array("int", array, elements);
 		free(array);
 	}
 	else if (!strcmp(type, "char"))
@@ -65,23 +54,12 @@ int main(int argc, void** argv)
 			array[i] = *((char*)argv[i + 2]);
 		}
 		mergesort(array, elements, element_size, char_comparator);
-		for (int i = 0; i < elements; i++)
-		{
-			printf("%c", (char*)array[i]);
-			if (i == elements - 1)
-			{
-				printf("\n");
-			}
-			else
-			{
-				printf(" ");
-			}
-		}
+		print_array("char", array, elements);
 		free(array);
 	}
 	else if (!strcmp(type, "str"))
 	{
-		element_size = sizeof(argv[2]);
+		element_size = sizeof(char*);
 		comparator = str_comparator;
 		char** array = (char**)malloc(element_size * elements);
 		assert(array != NULL);
@@ -90,9 +68,30 @@ int main(int argc, void** argv)
 			array[i] = argv[i + 2];
 		}
 		mergesort(array, elements, element_size, str_comparator);
-		for (int i = 0; i < elements; i++)
+		print_array("str", array, elements);
+		free(array);
+	}
+}
+
+void print_array(const char* type, void* array, int elements)
+{
+	for (int i = 0; i < elements; i++)
 		{
-			printf("%s", array[i]);
+			if(!strcmp(type,"int"))
+			{
+				int* p = (int*)array;
+				printf("%d", p[i]);
+			}
+			else if (!strcmp(type,"char"))
+			{
+				char* p = (char*)array;
+				printf("%c", p[i]);
+			}
+			else
+			{
+				char** p = (char**)array;
+				printf("%s", p[i]);
+			}
 			if (i == elements - 1)
 			{
 				printf("\n");
@@ -102,6 +101,4 @@ int main(int argc, void** argv)
 				printf(" ");
 			}
 		}
-		free(array);
-	}
 }
