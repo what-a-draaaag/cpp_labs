@@ -75,30 +75,33 @@ int main(int argc, void** argv)
 
 void print_array(const char* type, void* array, int elements)
 {
-	for (int i = 0; i < elements; i++)
-		{
-			if(!strcmp(type,"int"))
+	if (elements!=0)
+	{
+		for (int i = 0; i < elements; i++)
 			{
-				int* p = (int*)array;
-				printf("%d", p[i]);
+				if(!strcmp(type,"int"))
+				{
+					int* p = (int*)array;
+					printf("%d", p[i]);
+				}
+				else if (!strcmp(type,"char"))
+				{
+					char* p = (char*)array;
+					printf("%c", p[i]);
+				}
+				else
+				{
+					char** p = (char**)array;
+					printf("%s", p[i]);
+				}
+				if (i == elements - 1)
+				{
+					printf("\n");
+				}
+				else
+				{
+					printf(" ");
+				}
 			}
-			else if (!strcmp(type,"char"))
-			{
-				char* p = (char*)array;
-				printf("%c", p[i]);
-			}
-			else
-			{
-				char** p = (char**)array;
-				printf("%s", p[i]);
-			}
-			if (i == elements - 1)
-			{
-				printf("\n");
-			}
-			else
-			{
-				printf(" ");
-			}
-		}
+	}
 }
