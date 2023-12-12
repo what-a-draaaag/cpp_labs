@@ -35,11 +35,11 @@ void remove_node(intrusive_list* list, intrusive_node* node)
 	}
 	else
 	{
+		node->prev->next = node->next;
 		if (node->next != NULL)
 		{
 			node->next = node->prev;
 		}
-		node->prev->next = node->next;
 	}
 }
 
