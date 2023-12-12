@@ -44,7 +44,6 @@ void show_all_points(intrusive_list* list)
   while (start_node != NULL)
   {
     point* current_point = container_of(start_node, point, node);
-    printf("(%d %d) ", current_point->x, current_point->y);
     if (start_node->next == NULL)
     {
       printf("(%d %d)\n", current_point->x, current_point->y);
