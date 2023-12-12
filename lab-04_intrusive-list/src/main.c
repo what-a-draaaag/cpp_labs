@@ -40,6 +40,10 @@ void remove_point(intrusive_list* list, int x, int y)
 
 void show_all_points(intrusive_list* list) 
 {
+  if (list->head==NULL)
+  {
+    printf("\n");
+  }
   intrusive_node* start_node = list->head;
   while (start_node != NULL)
   {
