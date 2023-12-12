@@ -114,6 +114,8 @@ int main() {
       }
    }
 
+   remove_all_points(&list);
+
   return 0;
   
 }
