@@ -47,7 +47,11 @@ void show_all_points(intrusive_list* list)
     printf("(%d %d) ", current_point->x, current_point->y);
     if (start_node->next == NULL)
     {
-      printf("\n");
+      printf("(%d %d)\n", current_point->x, current_point->y);
+    }
+    else
+    {
+      printf("(%d %d) ", current_point->x, current_point->y);
     }
     start_node = start_node->next;
   }
