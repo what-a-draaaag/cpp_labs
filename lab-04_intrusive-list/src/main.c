@@ -87,37 +87,44 @@ int main() {
         if (!strcmp(input, "add"))
         {
           scanf("%d %d", &x, &y);
-          add_point(&list, x, y);
+          printf("%s %d %d\n", input,x,y);
+          //add_point(&list, x, y);
         }
         else if (!strcmp(input, "rm"))
         {
           scanf("%d %d", &x, &y);
-          remove_point(&list, x, y);
+          printf("%s %d %d\n", input,x,y);
+          //remove_point(&list, x, y);
         }
         else if (!strcmp(input, "len"))
         {
-          printf("%d\n", get_length(&list));
+          printf("%s\n", input);
+          //printf("%d\n", get_length(&list));
         }
         else if (!strcmp(input, "print"))
         {
-          show_all_points(&list);
+          printf("%s\n", input);
+          //show_all_points(&list);
         }
         else if (!strcmp(input, "rma"))
         {
-          remove_all_points(&list);
+          printf("%s\n", input);
+          //remove_all_points(&list);
         }
         else if (!strcmp(input, "exit"))
         {
+          printf("%s\n", input);
           break;
         }
         else
         {
-          printf("Unknown command\n");
+          printf("%s\n", input);
+          //printf("Unknown command\n");
         }
       }
    }
 
-   remove_all_points(&list);
+   //remove_all_points(&list);
 
   return 0;
   
