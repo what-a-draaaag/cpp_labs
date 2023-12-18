@@ -81,7 +81,9 @@ void apply(intrusive_list *list, void (*op)(intrusive_node *node, void *data), v
 		return;
 	}
 	intrusive_node* last = last_node(list);
+	point* last_point = container_of(last, point, node);
 	op(last, data);
 	remove_node(list, last);
+	free(last_point);
 	apply(list, op, data);
 }
