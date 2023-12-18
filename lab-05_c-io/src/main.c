@@ -24,6 +24,10 @@ int main(int argc, void** argv)
 	const char* file_path = argv[2];
 	const char* action = argv[3];
 	FILE* in_file = fopen(file_path, "r");
+	if (in_file==NULL)
+	{
+		return 0;
+	}
 	intrusive_list list;
 	init_list(&list);
 	void (*op)(intrusive_node* node, void* data);
