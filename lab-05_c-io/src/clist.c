@@ -1,5 +1,7 @@
 #include "clist.h"
 #include "stddef.h"
+#include <stdlib.h>
+#include"point_list.h"
 
 void init_list(intrusive_list* list)
 {
