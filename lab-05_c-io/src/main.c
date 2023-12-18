@@ -63,7 +63,6 @@ int main(int argc, void** argv)
 		op = count_nodes;
 		apply(&list, op, &count);
 		printf("%d\n", count);
-		return 0;
 	}
 	else if (!strcmp(action, "print"))
 	{
@@ -71,7 +70,6 @@ int main(int argc, void** argv)
 		op = fmt_print;
 		apply(&list, op, fmt);
 		printf("\n");
-		return 0;
 	}
 	else
 	{
@@ -93,6 +91,7 @@ int main(int argc, void** argv)
 				fwrite(&y, 3, 1, out_file);
 			}
 			remove_node(&list, last);
+			free(current_point);
 			if ((last_node(&list))==NULL)
 			{
 				break;
