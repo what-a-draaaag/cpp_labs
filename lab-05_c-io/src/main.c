@@ -17,7 +17,6 @@ void count_nodes(intrusive_node* current_node, void* data)
 	(*tmp)++;
 }
 
-
 int main(int argc, void** argv)
 {
 	const char* file_type = argv[1];
