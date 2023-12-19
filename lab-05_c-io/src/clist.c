@@ -45,23 +45,6 @@ void remove_node(intrusive_list* list, intrusive_node* node)
 	}
 }
 
-int get_length(intrusive_list* list)
-{
-	int length = 0;
-	if (list->head == NULL)
-	{
-		return 0;
-	}
-	intrusive_node* start = list->head;
-	length = 1;
-	while(start->next != NULL)
-	{
-	  start = start->next;
-	  length++;
-	}
-	return length;
-}
-
 intrusive_node* last_node(intrusive_list* list)
 {
 	if (list->head == NULL)
@@ -78,7 +61,7 @@ intrusive_node* last_node(intrusive_list* list)
 
 void apply(intrusive_list *list, void (*op)(intrusive_node *node, void *data), void *data)
 {
-	if (list->head==NULL)
+	if (last_node(list)==NULL)
 	{
 		return;
 	}

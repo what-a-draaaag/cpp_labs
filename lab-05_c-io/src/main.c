@@ -1,17 +1,15 @@
-#include <stdio.h>
-#include"clist.h"
-#include"point_list.h"
-#include <stdbool.h>
-#include <stdlib.h>
-#include <string.h>
+#include "stdio.h"
+#include "clist.h"
+#include "point_list.h"
+#include "stdbool.h"
+#include "stdlib.h"
+#include "string.h"
 
 void fmt_print(intrusive_node* current_node, void* data)
 {
 	char* fmt = (char*)data;
 	point* current_point = container_of(current_node, point, node);
-	int x = current_point->x;
-	int y = current_point->y;
-	printf(fmt, x, y);
+	printf(fmt, current_point->x, current_point->y);
 }
 
 void count_nodes(intrusive_node* current_node, void* data)
@@ -22,18 +20,18 @@ void count_nodes(intrusive_node* current_node, void* data)
 
 int main(int argc, void** argv)
 {
-	
 	const char* file_type = argv[1];
 	const char* file_path = argv[2];
 	const char* action = argv[3];
 	FILE* in_file = fopen(file_path, "r");
+
 	if (in_file==NULL)
 	{
 		return 0;
 	}
+
 	intrusive_list list;
 	init_list(&list);
-	void (*op)(intrusive_node* node, void* data);
 
 	while(true)
 	{
@@ -44,12 +42,12 @@ int main(int argc, void** argv)
 		}
 		else if (!strcmp(file_type, "loadbin"))
 		{
-			read_code = fread(&x,3,1,in_file);
-			if (read_code!=0)
-			{
-				read_code += fread(&y,3,1,in_file);
-			}
+			int arr[2];
+			read_code = fread(arr,3,2,in_file);
+			x = arr[0];
+			y = arr[1];
 		}
+
 		if (!(read_code == -1 || read_code == 0))
 		{
 			add_point(&list, x, y);
@@ -63,14 +61,13 @@ int main(int argc, void** argv)
 	if (!strcmp(action, "count"))
 	{
 		int count = 0;
-		op = count_nodes;
-		apply(&list, op, &count);
+		apply(&list, count_nodes, &count);
 		printf("%d\n", count);
 	}
-	else if (!strcmp(action, "print"))
+	
+	if (!strcmp(action, "print"))
 	{
-		op = fmt_print;
-		apply(&list, op, argv[4]);
+		apply(&list, fmt_print, argv[4]);
 		printf("\n");
 	}
 	else
@@ -103,4 +100,5 @@ int main(int argc, void** argv)
 	}
 	
 	remove_all_points(&list);
+	return 0;
 }
