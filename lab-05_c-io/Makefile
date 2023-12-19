@@ -1,6 +1,6 @@
 all: lab-05_c-io
 
-flag = -c -I "include"
+flag = -g3 -c -I "include"
 
 obj/main.o: src/main.c
 	mkdir obj

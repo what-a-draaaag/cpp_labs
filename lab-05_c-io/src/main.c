@@ -2,13 +2,16 @@
 #include"clist.h"
 #include"point_list.h"
 #include <stdbool.h>
+#include <stdlib.h>
 #include <string.h>
 
 void fmt_print(intrusive_node* current_node, void* data)
 {
-	const char* fmt = (const char*)data;
+	char* fmt = (char*)data;
 	point* current_point = container_of(current_node, point, node);
-	printf(fmt, current_point->x, current_point->y);
+	int x = current_point->x;
+	int y = current_point->y;
+	printf(fmt, x, y);
 }
 
 void count_nodes(intrusive_node* current_node, void* data)
@@ -66,9 +69,8 @@ int main(int argc, void** argv)
 	}
 	else if (!strcmp(action, "print"))
 	{
-		const char* fmt = argv[4];
 		op = fmt_print;
-		apply(&list, op, fmt);
+		apply(&list, op, argv[4]);
 		printf("\n");
 	}
 	else
