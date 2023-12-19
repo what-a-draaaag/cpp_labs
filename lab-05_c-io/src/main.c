@@ -58,6 +58,11 @@ int main(int argc, void** argv)
 	{
 		return 0;
 	}
+	if (!fseek(in_file, 1, SEEK_SET))
+	{
+		return 0;
+	}
+	fseek(in_file, 0, SEEK_SET);
 
 	intrusive_list list;
 	init_list(&list);
