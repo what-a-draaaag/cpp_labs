@@ -20,6 +20,7 @@ void remove_node(intrusive_list* list, intrusive_node* node);
 int get_length(intrusive_list* list);
 intrusive_node* last_node(intrusive_list* list);
 void apply(intrusive_list* list, void (*op)(intrusive_node* node, void* data), void *data);
+void savefile(const char* out_file_path, const char* action, intrusive_list* list);
 
 #endif
 

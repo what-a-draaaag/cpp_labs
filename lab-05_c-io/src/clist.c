@@ -2,6 +2,9 @@
 #include "stddef.h"
 #include <stdlib.h>
 #include"point_list.h"
+#include <string.h>
+#include <stdbool.h>
+#include <stdio.h>
 
 void init_list(intrusive_list* list)
 {
@@ -71,4 +74,32 @@ void apply(intrusive_list *list, void (*op)(intrusive_node *node, void *data), v
 	remove_node(list, last);
 	free(last_point);
 	apply(list, op, data);
+}
+
+void savefile(const char* out_file_path, const char* action, intrusive_list* list)
+{
+	FILE* out_file = fopen(out_file_path, "wa");
+	intrusive_node* last = last_node(list);
+	while (true)
+	{
+		point* current_point = container_of(last, point, node);
+		int x = current_point->x;
+		int y = current_point->y;
+		if (!strcmp(action, "savetext"))
+		{
+			fprintf(out_file, "%d %d\n", x, y);
+		}
+		else
+		{
+			fwrite(&x, 3, 1, out_file);
+			fwrite(&y, 3, 1, out_file);
+		}
+		remove_node(list, last);
+		free(current_point);
+		if ((last_node(list))==NULL)
+		{
+			break;
+		}
+		last = last_node(list);
+	}
 }

@@ -7,7 +7,7 @@
 
 void fmt_print(intrusive_node* current_node, void* data)
 {
-	char* fmt = (char*)data;
+	const char* fmt = (const char*)data;
 	point* current_point = container_of(current_node, point, node);
 	int x = current_point->x;
 	int y = current_point->y;
@@ -18,6 +18,41 @@ void count_nodes(intrusive_node* current_node, void* data)
 {
 	int* tmp = data;
 	(*tmp)++;
+}
+
+void loadtxt(FILE* file, intrusive_list* list)
+{
+	while(true)
+	{
+		int x, y, read_code;
+		read_code = fscanf(file,"%d %d", &x, &y);
+		if (read_code != 0)
+		{
+			add_point(list, x, y);
+		}
+		if (feof(file))
+		{
+			break;
+		}
+	}
+}
+
+void loadbin(FILE* file, intrusive_list* list)
+{
+	int arr[2];
+	arr[0] = 0;
+	arr[1] = 0;
+	int index = 0;
+	while(fread(&arr[index], 3, 1, file))
+	{
+		index = 1 - index;
+		if (index == 0)
+		{
+			add_point(list, arr[0], arr[1]);
+			arr[0] = 0;
+			arr[1] = 0;
+		}
+	}
 }
 
 int main(int argc, void** argv)
@@ -35,31 +70,15 @@ int main(int argc, void** argv)
 	intrusive_list list;
 	init_list(&list);
 
-	while(true)
+	if (!strcmp(file_type, "loadtext"))
 	{
-		int x, y, read_code;
-		if (!strcmp(file_type, "loadtext"))
-		{
-			read_code = fscanf(in_file,"%d %d", &x, &y);
-		}
-		else if (!strcmp(file_type, "loadbin"))
-		{
-			read_code = fread(&x,3,1,in_file);
-			if (read_code!=0)
-			{
-				read_code += fread(&y,3,1,in_file);
-			}
-		}
-		if (!(read_code == -1 || read_code == 0))
-		{
-			add_point(&list, x, y);
-		}
-		
-		if (feof(in_file))
-		{
-			break;
-		}
+		loadtxt(in_file, &list);
 	}
+	else if (!strcmp(file_type, "loadbin"))
+	{
+		loadbin(in_file, &list);
+	}
+		
 	if (!strcmp(action, "count"))
 	{
 		int count = 0;
@@ -74,30 +93,8 @@ int main(int argc, void** argv)
 	else
 	{
 		const char* out_file_path = argv[4];
-		FILE* out_file = fopen(out_file_path, "wa");
-		intrusive_node* last = last_node(&list);
-		while (true)
-		{
-			point* current_point = container_of(last, point, node);
-			int x = current_point->x;
-			int y = current_point->y;
-			if (!strcmp(action, "savetext"))
-			{
-				fprintf(out_file, "%d %d\n", x, y);
-			}
-			else
-			{
-				fwrite(&x, 3, 1, out_file);
-				fwrite(&y, 3, 1, out_file);
-			}
-			remove_node(&list, last);
-			free(current_point);
-			if ((last_node(&list))==NULL)
-			{
-				break;
-			}
-			last = last_node(&list);
-		}
+		savefile(out_file_path, action, &list);
+		
 	}
 	
 	remove_all_points(&list);
