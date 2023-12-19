@@ -9,7 +9,9 @@ void fmt_print(intrusive_node* current_node, void* data)
 {
 	char* fmt = (char*)data;
 	point* current_point = container_of(current_node, point, node);
-	printf(fmt, current_point->x, current_point->y);
+	int x = current_point->x;
+	int y = current_point->y;
+	printf(fmt, x, y);
 }
 
 void count_nodes(intrusive_node* current_node, void* data)
