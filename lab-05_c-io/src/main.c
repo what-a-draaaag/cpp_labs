@@ -22,18 +22,10 @@ void count_nodes(intrusive_node* current_node, void* data)
 
 void loadtxt(FILE* file, intrusive_list* list)
 {
-	while(true)
+	int x, y;
+	while(fscanf(file,"%d %d", &x, &y)==2)
 	{
-		int x, y, read_code;
-		read_code = fscanf(file,"%d %d", &x, &y);
-		if (read_code != 0)
-		{
-			add_point(list, x, y);
-		}
-		if (feof(file))
-		{
-			break;
-		}
+		add_point(list, x, y);
 	}
 }
 
@@ -94,7 +86,6 @@ int main(int argc, void** argv)
 	{
 		const char* out_file_path = argv[4];
 		savefile(out_file_path, action, &list);
-		
 	}
 	
 	remove_all_points(&list);
