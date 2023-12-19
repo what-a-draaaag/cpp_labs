@@ -47,6 +47,26 @@ void loadbin(FILE* file, intrusive_list* list)
 	}
 }
 
+void process_empty_file(FILE* file, const char* action, void**argv)
+{
+	if (!strcmp(action,"print"))
+	{
+		printf("\n");
+	}
+	else if (!strcmp(action,"count"))
+	{
+		printf("0\n");
+	}
+	else
+	{
+		const char* file_path = argv[4];
+		FILE* empty_file = fopen(file_path, "wa");
+		fclose(empty_file);
+	}
+}
+
+
+
 int main(int argc, void** argv)
 {
 	const char* file_type = argv[1];
@@ -61,6 +81,7 @@ int main(int argc, void** argv)
 	fseek(in_file, 0, SEEK_END);
 	if (ftell(in_file)==0)
 	{
+		process_empty_file(in_file, action, argv);
 		return 0;
 	}
 	fseek(in_file, 0, SEEK_SET);
@@ -95,4 +116,5 @@ int main(int argc, void** argv)
 	}
 	
 	remove_all_points(&list);
+	fclose(in_file);
 }

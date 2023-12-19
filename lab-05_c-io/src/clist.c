@@ -102,4 +102,5 @@ void savefile(const char* out_file_path, const char* action, intrusive_list* lis
 		}
 		last = last_node(list);
 	}
+	fclose(out_file);
 }
