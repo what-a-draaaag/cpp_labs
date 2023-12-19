@@ -58,7 +58,8 @@ int main(int argc, void** argv)
 	{
 		return 0;
 	}
-	if (!fseek(in_file, 1, SEEK_SET))
+	fseek(in_file, 0, SEEK_END);
+	if (ftell(in_file)==0)
 	{
 		return 0;
 	}
