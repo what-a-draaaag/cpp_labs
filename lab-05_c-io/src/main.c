@@ -42,12 +42,12 @@ int main(int argc, void** argv)
 		}
 		else if (!strcmp(file_type, "loadbin"))
 		{
-			int arr[2];
-			read_code = fread(arr,3,2,in_file);
-			x = arr[0];
-			y = arr[1];
+			read_code = fread(&x,3,1,in_file);
+			if (read_code!=0)
+			{
+				read_code += fread(&y,3,1,in_file);
+			}
 		}
-
 		if (!(read_code == -1 || read_code == 0))
 		{
 			add_point(&list, x, y);
@@ -64,8 +64,7 @@ int main(int argc, void** argv)
 		apply(&list, count_nodes, &count);
 		printf("%d\n", count);
 	}
-	
-	if (!strcmp(action, "print"))
+	else if (!strcmp(action, "print"))
 	{
 		apply(&list, fmt_print, argv[4]);
 		printf("\n");
@@ -100,5 +99,4 @@ int main(int argc, void** argv)
 	}
 	
 	remove_all_points(&list);
-	return 0;
 }
