@@ -34,9 +34,14 @@ void loadbin(FILE* file, intrusive_list* list)
 	int arr[2];
 	arr[0] = 0;
 	arr[1] = 0;
+	int last_positive = 0x7fffff;
 	int index = 0;
 	while(fread(&arr[index], 3, 1, file))
 	{
+		if (arr[index] > last_positive)
+		{
+			arr[index] -= 1 << 24;
+		}
 		index = 1 - index;
 		if (index == 0)
 		{
