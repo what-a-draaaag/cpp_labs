@@ -75,20 +75,13 @@ void MyVector::reserve(std::size_t new_capacity){
 }
 
 void MyVector::resize(std::size_t new_size){
-	if (new_size<_size)
+	if (new_size<_capacity)
 	{
 		_size = new_size;
 		return;
 	}
-	if (new_size > _capacity)
-	{
-		_capacity = std::max(new_size, 2*_capacity);
-		this->reserve(_capacity);
-	}
-	for (int i = 0; i< new_size; i++)
-	{
-		_data[i] = (i<_size)?_data[i]:0;
-	}
+	_capacity = std::max(new_size, 2*_capacity);
+	this->reserve(_capacity);
 	_size = new_size;
 }
 
