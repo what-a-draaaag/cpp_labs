@@ -50,10 +50,6 @@ int MyVector::get(std::size_t index){
 	{
 		return _data[index];
 	}
-	else
-	{
-		return 0;
-	}
 }
 
 std::size_t MyVector::size(){
@@ -89,10 +85,11 @@ void MyVector::resize(std::size_t new_size){
 		_capacity = std::max(new_size, 2*_capacity);
 		this->reserve(_capacity);
 	}
-	for (int i = _size; i< new_size; i++)
+	for (int i = 0; i< new_size; i++)
 	{
-		_data[i] = 0;
+		_data[i] = (i<_size)?_data[i]:0;
 	}
+	_size = new_size;
 }
 
 void MyVector::push_back(int value){
