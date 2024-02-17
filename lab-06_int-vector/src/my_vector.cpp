@@ -135,4 +135,5 @@ void MyVector::erase(std::size_t index){
 	{
 		_data[i-1] = _data[i];
 	}
+	_size--;
 }
