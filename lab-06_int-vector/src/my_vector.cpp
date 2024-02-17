@@ -14,8 +14,13 @@ MyVector::MyVector(std::size_t init_capacity){
 }
 
 MyVector::MyVector(const MyVector& another){
+	if (&another==this)
+	{
+		return;
+	}
 	_size = another._size;
 	_capacity = another._capacity;
+	delete [] _data;
 	_data = new int[_capacity];
 	for (int i=0; i<_size; i++)
 	{
@@ -50,6 +55,7 @@ int MyVector::get(std::size_t index){
 	{
 		return _data[index];
 	}
+	return 0;
 }
 
 std::size_t MyVector::size(){
@@ -81,33 +87,42 @@ void MyVector::resize(std::size_t new_size){
 		return;
 	}
 	_capacity = std::max(new_size, 2*_capacity);
-	this->reserve(_capacity);
+	int* new_data = new int[_capacity];
+	for (int i = 0; i<_size; i++)
+	{
+		new_data[i] = _data[i];
+	}
 	for (int i = _size; i<new_size; i++)
 	{
 		_data[i] = 0;
 	}
 	_size = new_size;
+	delete [] _data;
+	_data = new_data;
 }
 
 void MyVector::push_back(int value){
 	if (_capacity==_size)
 	{
-		this->reserve(_capacity*2);
-		_data[_capacity/2] = value;
+		int* new_data = new int[_capacity*2];
+		for (int i = 0; i<_size; i++)
+		{
+			new_data[i] = _data[i];
+		}
+		delete [] _data;
+		_data = new_data;
+		_capacity*=2;
 	}
-	else
-	{
-		_data[_size] = value;
-	}
+	_data[_size] = value;
 	_size++;
 }
 
 void MyVector::insert(std::size_t index, int value){
-	if (index==_capacity)
+	if (_size==_capacity)
 	{
-		this->reserve(_capacity+1);
+		this->reserve(_capacity*2);
 	}
-	for (int i=_size+1; i > index; i--)
+	for (int i=_size; i > index; i--)
 	{
 		_data[i] = _data[i-1];
 	}
