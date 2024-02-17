@@ -1,4 +1,5 @@
 #include<algorithm>
+#include<stdexcept>
 #include "my_vector.hpp"
 
 MyVector::MyVector(){
@@ -48,6 +49,7 @@ void MyVector::set(std::size_t index, int value){
 	{
 		_data[index] = value;
 	}
+	throw std::out_of_range("Index out of range");
 }
 
 int MyVector::get(std::size_t index){
@@ -55,7 +57,7 @@ int MyVector::get(std::size_t index){
 	{
 		return _data[index];
 	}
-	return 0;
+	throw std::out_of_range("Index out of range");
 }
 
 std::size_t MyVector::size(){
@@ -104,14 +106,7 @@ void MyVector::resize(std::size_t new_size){
 void MyVector::push_back(int value){
 	if (_capacity==_size)
 	{
-		int* new_data = new int[_capacity*2];
-		for (int i = 0; i<_size; i++)
-		{
-			new_data[i] = _data[i];
-		}
-		delete [] _data;
-		_data = new_data;
-		_capacity*=2;
+		this->reserve(_capacity*2);
 	}
 	_data[_size] = value;
 	_size++;
