@@ -49,7 +49,6 @@ void MyVector::set(std::size_t index, int value){
 	{
 		_data[index] = value;
 	}
-	throw std::out_of_range("Index out of range");
 }
 
 int MyVector::get(std::size_t index){
