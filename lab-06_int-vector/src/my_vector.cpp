@@ -69,7 +69,6 @@ std::size_t MyVector::capacity(){
 void MyVector::reserve(std::size_t new_capacity){
 	if (_capacity<new_capacity)
 	{
-		_capacity = new_capacity;
 		int* new_data = new int[new_capacity];
 		for (int i = 0; i<_size; i++)
 		{
@@ -77,6 +76,7 @@ void MyVector::reserve(std::size_t new_capacity){
 		}
 		delete [] _data;
 		_data = new_data;
+		_capacity = new_capacity;
 	}
 }
 
@@ -92,13 +92,13 @@ void MyVector::resize(std::size_t new_size){
 	{
 		new_data[i] = _data[i];
 	}
+	delete [] _data;
+	_data = new_data;
 	for (int i = _size; i<new_size; i++)
 	{
 		_data[i] = 0;
 	}
 	_size = new_size;
-	delete [] _data;
-	_data = new_data;
 }
 
 void MyVector::push_back(int value){
