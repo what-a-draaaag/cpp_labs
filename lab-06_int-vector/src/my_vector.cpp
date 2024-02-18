@@ -21,7 +21,6 @@ MyVector::MyVector(const MyVector& another){
 	}
 	_size = another._size;
 	_capacity = another._capacity;
-	delete [] _data;
 	_data = new int[_capacity];
 	for (int i=0; i<_size; i++)
 	{
@@ -34,8 +33,13 @@ MyVector::~MyVector(){
 }
 
 MyVector& MyVector::operator=(const MyVector& another){
+	if (&another == this)
+	{
+		return *this;
+	}
 	_size = another._size;
 	_capacity = another._capacity;
+	delete [] _data;
 	_data = new int[_capacity];
 	for (int i=0; i<_size; i++)
 	{
@@ -87,14 +91,8 @@ void MyVector::resize(std::size_t new_size){
 		_size = new_size;
 		return;
 	}
-	_capacity = std::max(new_size, 2*_capacity);
-	int* new_data = new int[_capacity];
-	for (int i = 0; i<_size; i++)
-	{
-		new_data[i] = _data[i];
-	}
-	delete [] _data;
-	_data = new_data;
+	int new_capacity = std::max(new_size, 2*_capacity);
+	this->reserve(new_capacity);
 	for (int i = _size; i<new_size; i++)
 	{
 		_data[i] = 0;
