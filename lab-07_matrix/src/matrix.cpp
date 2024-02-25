@@ -111,10 +111,10 @@ Matrix Matrix::operator-(Matrix& m){
 }
 
 Matrix Matrix::operator*(Matrix& m){
-	Matrix result(_rows, _cols);
+	Matrix result(_rows, m._cols);
 	for (int i=0; i<_rows; i++)
 	{
-		for (int j =0; j<_cols; j++)
+		for (int j =0; j<m._cols; j++)
 		{
 			int val = 0;
 			for (int k = 0; k<_cols; k++)
