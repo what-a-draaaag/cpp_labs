@@ -2,7 +2,7 @@ all: lab-07_matrix
 
 flag = -g3 -c -I "include"
 
-obj/main.o: src/main.cpp
+obj/main.o: src/main.cpp include/matrix.h
 	mkdir obj
 	g++ $(flag) src/main.cpp -o obj/main.o
 obj/matrix.o: src/matrix.cpp
