@@ -20,7 +20,7 @@ public:
   Matrix operator+(Matrix& m) const;
   Matrix operator-(Matrix& m) const;
   Matrix operator*(Matrix& m) const;
-  Matrix operator-() const;
+  Matrix operator-();
 
   Matrix& operator+=(Matrix& m);
   Matrix& operator-=(Matrix& m);
@@ -33,5 +33,6 @@ private:
   size_t _cols;
   int **_data;
   void delete_matrix();
+  void swap(Matrix& m);
 };
 
