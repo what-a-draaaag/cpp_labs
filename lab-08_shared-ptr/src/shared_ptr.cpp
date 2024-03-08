@@ -21,7 +21,7 @@ shared_ptr& shared_ptr::operator=(shared_ptr other){
 	if (!isNull()){
 		storage_->decr();//check and delete
 		if (storage_->getCounter()==0){
-			storage_->~Storage();
+			storage_->~Storage(); 
 		}
 	}
 	storage_ = other.storage_;
