@@ -16,23 +16,22 @@ shared_ptr::shared_ptr(const shared_ptr& other){
 }
 
 shared_ptr& shared_ptr::operator=(shared_ptr other){
-	if (!isNull()){
-		decrAndCheck();
-	}
+	decrAndCheck();
 	storage_ = other.storage_;
 	storage_->incr();
 	return *this;
 }
 
 void shared_ptr::decrAndCheck(){
-	storage_->decr();//check and delete
-	if (storage_->getCounter()==0){
-		delete storage_;
+	if (!isNull()){
+		storage_->decr();
+		if (storage_->getCounter()==0){
+			delete storage_;
+		}
 	}
 }
 
 shared_ptr::~shared_ptr(){
-	if (isNull()) return;
 	decrAndCheck();
 }
 
@@ -48,9 +47,7 @@ bool shared_ptr::isNull() const{
 }
 
 void shared_ptr::reset(Matrix* obj){
-	if (storage_!=nullptr){
-		decrAndCheck();
-	}
+	decrAndCheck();
 	if (obj==nullptr){
 		storage_ = nullptr;
 		return;
