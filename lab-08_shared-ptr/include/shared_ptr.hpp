@@ -53,5 +53,6 @@ private:
     };
 
 private:
+	void decrAndCheck();
     Storage *storage_;
 };
