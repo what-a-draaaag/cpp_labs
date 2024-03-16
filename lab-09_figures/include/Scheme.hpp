@@ -17,6 +17,8 @@ public:
 
 private:
     // ...
+    int size;
+    int capacity_;
 
     Figure** figures_; // размер массива задается в конструкторе и больше не растет
 };
