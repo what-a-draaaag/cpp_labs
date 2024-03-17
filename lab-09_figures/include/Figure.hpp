@@ -5,7 +5,6 @@
 
 class Figure {
 public:
-    Figure();
     Figure(int id, int x, int y);
     virtual ~Figure();
 
@@ -14,8 +13,6 @@ public:
     virtual void zoom(int factor) = 0;
     void move(int new_x, int new_y);
     int getID();
-
-    // ...
 
 protected:
     int id;

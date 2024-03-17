@@ -8,7 +8,7 @@ public:
     void print() const;
     bool is_inside(int x, int y) const;
     void zoom(int factor);
-    // ...
+    
 private:
     int width_;
     int height_;
