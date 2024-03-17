@@ -27,7 +27,7 @@ void Scheme::remove_figure(int id){
 	for (int i=0;i<size; i++){
 		if (figures_[i]->getID() == id){
 			delete figures_[i];
-			printf("added figure by id %d\n", id);
+			printf("removed figure by id %d\n", id);
 			size--;
 			for (int j=i;j<size;j++){
 				figures_[j] = figures_[j+1];
