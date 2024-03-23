@@ -60,7 +60,7 @@ void Scheme::move(int id, int new_x, int new_y){
 
 int Scheme::get_index_by_id(int id){
 	for (int i=0;i<size_; i++){
-		if (figures_[i]->getID() == id){
+		if (figures_[i]->get_id() == id){
 			return i;
 		}
 	}

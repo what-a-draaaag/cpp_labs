@@ -3,7 +3,7 @@
 
 Circle::Circle(int id, int x, int y, int radius, const char* label): Figure(id, x, y){
 	radius_= radius;
-	label_ = label;
+	label_ = (char*)label;
 }
 Circle::~Circle(){}
 

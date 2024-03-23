@@ -9,7 +9,7 @@ void Figure::move(int new_x, int new_y){
 	y = new_y;
 }
 
-int Figure::getID(){
+int Figure::get_id(){
 	return id;
 }
 

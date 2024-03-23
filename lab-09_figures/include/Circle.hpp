@@ -13,5 +13,5 @@ public:
 
 private:
     int radius_;
-    const char* label_;
+    char* label_;
 };
