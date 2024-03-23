@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include "Figure.hpp"
 
 class Circle : public Figure {
@@ -13,5 +14,5 @@ public:
 
 private:
     int radius_;
-    char* label_;
+    std::string label_;
 };

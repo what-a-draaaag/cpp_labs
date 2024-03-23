@@ -3,7 +3,6 @@
 
 Scheme::Scheme(int capacity){
 	figures_ = new Figure*[capacity];
-	//printf("capacity = %d\n", capacity);
 	capacity_ = capacity;
 	size_ = 0;
 }
@@ -19,14 +18,12 @@ void Scheme::push_back_figure(Figure* fg){
 	if (size_+1<=capacity_){
 		figures_[size_] = fg;
 		size_++;
-		printf("added figure with id %d at index %d\n", fg->get_id(),size_-1);
 	}
 }
 
 void Scheme::remove_figure(int id){
 	int i = get_index_by_id(id);
 	delete figures_[i];
-	//printf("removed figure by id %d\n", id);
 	for (int j=i;j<size_;j++){
 		figures_[j] = figures_[j+1];
 	}
