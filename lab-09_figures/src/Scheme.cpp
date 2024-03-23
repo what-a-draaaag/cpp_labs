@@ -19,7 +19,7 @@ void Scheme::push_back_figure(Figure* fg){
 	if (size_+1<=capacity_){
 		figures_[size_] = fg;
 		size_++;
-		printf("added figure with id %d at index %d\n", fg->getID(),size_-1);
+		printf("added figure with id %d at index %d\n", fg->get_id(),size_-1);
 	}
 }
 
