@@ -1,44 +1,83 @@
-#ifndef LAB10_EMPLOYEES_H_INCLUDED
-#define LAB10_EMPLOYEES_H_INCLUDED
+#pragma once
 
 #include <stdint.h>
+#include <fstream>
+#include <string>
+#include <cstdint>
+#include <iostream>
+#include <vector>
 
-class Developer {
+
+
+
+class Employee{
 public:
-  int salary() const {
-    int salary = _base_salary;
-    if (_has_bonus) { salary += 1000; }
-    return salary;
-  }
-  /* ?? operator>>(??); */
-  /* ?? operator<<(??); */
-private:
-  char *_name;
+  virtual int salary() const = 0;
+  virtual int get_type() const = 0;
+  virtual std::string get_type_name() const = 0;
+
+  friend std::istream& operator>>(std::istream& in, Employee& emp);
+  friend std::ostream& operator<<(std::ostream& out, const Employee& emp);
+  friend std::ifstream& operator>>(std::ifstream& in, Employee& emp);
+  friend std::ofstream& operator<<(std::ofstream& out, const Employee& emp);
+
+  virtual void write_text(std::ostream& out) const;
+  virtual void write_bin(std::ofstream& out) const;
+  virtual void read_text(std::istream& in);
+  virtual void read_bin(std::ifstream& in);
+
+protected:
+  std::string _name;
   int32_t _base_salary;
+};
+
+
+
+class Developer: public Employee {
+public:
+  virtual int salary() const;
+  virtual int get_type() const;
+  virtual std::string get_type_name() const;
+
+  virtual void write_text(std::ostream& out) const;
+  virtual void write_bin(std::ofstream& out) const;
+  virtual void read_text(std::istream& in);
+  virtual void read_bin(std::ifstream& in);
+private:
   bool _has_bonus;
 };
 
-class SalesManager {
+
+
+class SalesManager: public Employee {
 public:
-  int salary() const {
-    return _base_salary + _sold_nm * _price * 0.01;
-  }
-  /* ?? operator>>(??); */
-  /* ?? operator<<(??); */
+  virtual int salary() const;
+  virtual int get_type() const;
+  virtual std::string get_type_name() const;
+
+  virtual void write_text(std::ostream& out) const;
+  virtual void write_bin(std::ofstream& out) const;
+  virtual void read_text(std::istream& in);
+  virtual void read_bin(std::ifstream& in);
+  
 private:
-  char *_name;
-  int32_t _base_salary;
   int32_t _sold_nm, _price;
 };
 
+
+
 class EmployeesArray {
 public:
-  void add(const Employee *e);
+  void add(const Employee* emp);
   int total_salary() const;
-  /* ?? operator>>(??); */
-  /* ?? operator<<(??); */
-private:
-  Employee **_employees;
-};
+  ~EmployeesArray();
 
-#endif
+  void add();
+  void list();
+  void load(std::string filename);
+  void save(std::string filename);
+
+  void read_new_emp(std::ifstream& in);
+private:
+  std::vector<Employee*> _employees;
+};
