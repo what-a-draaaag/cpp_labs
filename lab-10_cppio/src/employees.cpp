@@ -130,15 +130,9 @@ void SalesManager::read_bin(std::ifstream& in){
 
 void EmployeesArray::add(){
 	int type;
-	std::cin >> type;
-	Employee* new_emp;
-	if (type == 1){
-		new_emp = new Developer();
-	}
-	else{
-		new_emp = new SalesManager();
-	}
-	new_emp->read_text(std::cin);
+   	std::cin >> type;
+   	Employee* new_emp = make_employee(type);
+	std::cin >> *new_emp;
 	_employees.push_back(new_emp);
 }
 
@@ -175,7 +169,13 @@ void EmployeesArray::save(std::string filename){
 
 void EmployeesArray::read_new_emp(std::ifstream& in){
    	int type;
-	in >> read_le_int32(type);
+   	in >> read_le_int32(type);
+	Employee* new_emp = make_employee(type);
+	in >> *new_emp;
+	_employees.push_back(new_emp);
+}
+
+Employee* EmployeesArray::make_employee(int type){
 	Employee* new_emp;
 	if (type == 1){
 		new_emp = new Developer();
@@ -183,8 +183,7 @@ void EmployeesArray::read_new_emp(std::ifstream& in){
 	else{
 		new_emp = new SalesManager();
 	}
-	in >> *new_emp;
-	_employees.push_back(new_emp);
+	return new_emp;
 }
 
 

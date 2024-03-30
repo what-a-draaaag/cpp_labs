@@ -35,14 +35,14 @@ protected:
 
 class Developer: public Employee {
 public:
-  virtual int salary() const;
-  virtual int get_type() const;
-  virtual std::string get_type_name() const;
+  virtual int salary() const override;
+  virtual int get_type() const override;
+  virtual std::string get_type_name() const override;
 
-  virtual void write_text(std::ostream& out) const;
-  virtual void write_bin(std::ofstream& out) const;
-  virtual void read_text(std::istream& in);
-  virtual void read_bin(std::ifstream& in);
+  virtual void write_text(std::ostream& out) const override;
+  virtual void write_bin(std::ofstream& out) const override;
+  virtual void read_text(std::istream& in) override;
+  virtual void read_bin(std::ifstream& in) override;
 private:
   bool _has_bonus;
 };
@@ -51,14 +51,14 @@ private:
 
 class SalesManager: public Employee {
 public:
-  virtual int salary() const;
-  virtual int get_type() const;
-  virtual std::string get_type_name() const;
+  virtual int salary() const override;
+  virtual int get_type() const override;
+  virtual std::string get_type_name() const override;
 
-  virtual void write_text(std::ostream& out) const;
-  virtual void write_bin(std::ofstream& out) const;
-  virtual void read_text(std::istream& in);
-  virtual void read_bin(std::ifstream& in);
+  virtual void write_text(std::ostream& out) const override;
+  virtual void write_bin(std::ofstream& out) const override;
+  virtual void read_text(std::istream& in) override;
+  virtual void read_bin(std::ifstream& in) override;
   
 private:
   int32_t _sold_nm, _price;
@@ -78,6 +78,7 @@ public:
   void save(std::string filename);
 
   void read_new_emp(std::ifstream& in);
+  Employee* make_employee(int type);
 private:
   std::vector<Employee*> _employees;
 };
