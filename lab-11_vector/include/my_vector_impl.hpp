@@ -1,6 +1,7 @@
 #pragma once
 
 #include "my_vector.hpp"
+#include <ostream>
 
 namespace containers{
 
@@ -28,7 +29,7 @@ my_vector<T>::my_vector(std::size_t n){
     _size = n;
     _capacity = make_capacity(n);
     _array = (T*)(new char[_capacity*sizeof(T)]);
-    for (int i=0; i<_size; i++){
+    for (size_t i=0; i<_size; i++){
         new (_array+i) T();
     }
 }
@@ -52,7 +53,7 @@ my_vector<T>& my_vector<T>::operator=(const my_vector<T>& other){
 template<typename T>
 void my_vector<T>::copy_array(const my_vector<T>& other){
     _array = (T*)(new char[_capacity*sizeof(T)]);
-    for (int i=0; i<other._size; i++){
+    for (size_t i=0; i<other._size; i++){
         new (_array+i) T(other._array[i]);
     }
 }
@@ -79,7 +80,7 @@ template <typename T>
 void my_vector<T>::resize(std::size_t n){
     if (n<_size)
     {
-        for (int i=n; i<_size;i++){
+        for (size_t i=n; i<_size;i++){
             _array[i].~T();
         }
         _size = n;
@@ -87,7 +88,7 @@ void my_vector<T>::resize(std::size_t n){
     }
     int new_capacity = make_capacity(n);
     reserve(new_capacity);
-    for (int i = _size; i<n; i++)
+    for (size_t i = _size; i<n; i++)
     {
         new (_array+i) T();//bug??
     }
@@ -102,7 +103,7 @@ void my_vector<T>::reserve(std::size_t n){
     if (_capacity<n)
     {
         T* new_array = (T*)(new char[n*sizeof(T)]);
-        for (int i = 0; i<_size; i++)
+        for (size_t i = 0; i<_size; i++)
         {
             new (new_array+i) T(_array[i]);
             _array[i].~T();
@@ -137,7 +138,7 @@ void my_vector<T>::pop_back(){
 
 template <typename T>
 void my_vector<T>::clear(){
-    for (int i=0; i<_size; i++){
+    for (size_t i=0; i<_size; i++){
         _array[i].~T();
     }
     _size=0;
@@ -145,7 +146,7 @@ void my_vector<T>::clear(){
 
 template <typename T>
 std::ostream& operator<<(std::ostream& out, const my_vector<T>& v){
-    for (int i=0; i<v._size; i++){
+    for (size_t i=0; i<v._size; i++){
         out << v._array[i] << " ";
     }
     out << std::endl;
