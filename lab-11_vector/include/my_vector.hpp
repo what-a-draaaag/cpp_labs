@@ -1,6 +1,10 @@
 #pragma once
 
 #include <cstddef>
+#include <ostream>
+#include <cassert>
+#include <cstring>
+#include <sstream>
 
 namespace containers {
 
