@@ -2,6 +2,10 @@
 
 #include "my_vector.hpp"
 #include <ostream>
+#include <cstddef>
+#include <cassert>
+#include <cstring>
+#include <sstream>
 
 namespace containers{
 

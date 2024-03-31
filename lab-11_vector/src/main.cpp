@@ -1,9 +1,7 @@
 #include <iostream>
 
 #include "my_vector_impl.hpp"
-#include <cassert>
-#include <cstring>
-#include <sstream>
+
 
 namespace product {
 
