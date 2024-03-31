@@ -120,7 +120,7 @@ void my_vector<T>::reserve(std::size_t n){
 }
 
 template <typename T>
-T& my_vector<T>::operator[](std::size_t index){
+T& my_vector<T>::operator[](std::size_t index) const {
     return _array[index];
 }
 
