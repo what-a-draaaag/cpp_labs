@@ -56,10 +56,10 @@ template <typename T>
 void test_my_vector(const T& arg1, const T& arg2)
 {
     containers::my_vector<T> v1;
-    assert(v1.capacity() == 2);
+    assert(v1.capacity() == 0);
     assert(v1.size() == 0);
     v1.push_back(arg1);
-    assert(v1.capacity() == 2);
+    assert(v1.capacity() == 1);
     assert(v1.size() == 1);
     std::stringstream ss1, ss2;
     ss1 << v1;

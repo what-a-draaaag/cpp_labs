@@ -24,8 +24,8 @@ int make_capacity(int num){
 template<typename T>
 my_vector<T>::my_vector(){
     _size = 0;
-    _capacity = 2;
-    _array = (T*)(new char[2*sizeof(T)]);
+    _capacity = 0;
+    _array = (T*)(new char[sizeof(T)]);
 }
 
 template<typename T>
