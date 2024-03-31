@@ -1,5 +1,4 @@
-#ifndef MY_VECTOR_H_
-#define MY_VECTOR_H_
+#pragma once
 
 #include <cstddef>
 
@@ -8,33 +7,36 @@ namespace containers {
 template<typename T>
 class my_vector {
 public:
-    my_vector();
-    my_vector(std::size_t n);
-    my_vector(my_vector other);
-    my_vector operator=(my_vector other);
+    explicit my_vector();
+    explicit my_vector(std::size_t n);
+    my_vector(const my_vector<T>& other);
+    my_vector<T>& operator=(const my_vector<T>& other);
     ~my_vector();
 
-    std::size_t size();
-    std::size_t capacity();
-    bool empty();
+    std::size_t size() const;
+    std::size_t capacity() const;
+    bool empty() const;
 
     void resize(std::size_t n);
     void reserve(std::size_t n);
 
-    ?? operator[](std::size_t index);
+    T& operator[](std::size_t index);
 
-    void push_back(T t);
+    void push_back(const T& t);
     void pop_back();
     void clear();
 
+    void copy_array(const my_vector<T>& other);
+
+    template <typename V>
+    friend std::ostream& operator<<(std::ostream& out, const my_vector<V>& v);
+
 private:
-    size_t capacity_;
-    size_t size_;
-    T* array_;
+    size_t _capacity;
+    size_t _size;
+    T* _array;
 };
 
 }
 
-#include "my_vector_impl.h"
-
-#endif  // MY_VECTOR_H_
+#include "my_vector_impl.hpp"
