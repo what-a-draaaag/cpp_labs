@@ -41,12 +41,15 @@ my_vector<T>::my_vector(std::size_t n){
 template<typename T>
 my_vector<T>::my_vector(const my_vector<T>& other){
     _size = other._size;
-    _capacity = make_capacity(other._size);
+    _capacity = make_capacity(other._size); 
     copy_array(other);
 }
 
 template<typename T>
 my_vector<T>& my_vector<T>::operator=(const my_vector<T>& other){
+    if (this == &other){
+        return *this;
+    }
     clear();
     delete [] (char*)_array;
     _size = other._size; //copy
@@ -152,10 +155,10 @@ void my_vector<T>::clear(){
 
 template <typename T>
 std::ostream& operator<<(std::ostream& out, const my_vector<T>& v){
-    for (size_t i=0; i<v._size; i++){
-        out << v._array[i] << " ";
+    out << v._array[0];
+    for (size_t i=1; i<v._size; i++){
+        out << " " << v._array[i];
     }
-    out << std::endl;
     return out;
 }
 }
