@@ -47,6 +47,7 @@ my_vector<T>::my_vector(const my_vector<T>& other){
 
 template<typename T>
 my_vector<T>& my_vector<T>::operator=(const my_vector<T>& other){
+    clear();
     delete [] (char*)_array;
     _size = other._size; //copy
     _capacity = make_capacity(other._size);
