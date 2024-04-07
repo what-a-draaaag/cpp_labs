@@ -64,6 +64,7 @@ void my_vector<T>::copy_array(const my_vector<T>& other){
 
 template<typename T>
 my_vector<T>::~my_vector(){
+    clear();
     delete [] (char*)_array;
 }
 
