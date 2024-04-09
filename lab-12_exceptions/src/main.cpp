@@ -57,9 +57,9 @@ int main(int, char **) {
       
     }
   
-  catch (std::bad_alloc& e){
+  /*catch (std::bad_alloc&){
     std::cout << "Unable to allocate memory." << std::endl;
-  }
+  }*/
   catch (MatrixException& e){
     std::cout << e.what() << std::endl;
   }

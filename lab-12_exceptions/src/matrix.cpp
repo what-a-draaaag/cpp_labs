@@ -141,20 +141,25 @@ Matrix Matrix::operator*(Matrix& m) const{
 	if (_cols!=m._rows){
 		throw MatrixException("MUL: #arg1.columns != #arg2.rows.");
 	}
-	Matrix result(_rows, m._cols);
-	for (size_t i=0; i<_rows; i++)
-	{
-		for (size_t j =0; j<m._cols; j++)
+	try{
+		Matrix result(_rows, m._cols);
+		for (size_t i=0; i<_rows; i++)
 		{
-			int val = 0;
-			for (size_t k = 0; k<_cols; k++)
+			for (size_t j =0; j<m._cols; j++)
 			{
-				val += _data[i][k]*m._data[k][j];
+				int val = 0;
+				for (size_t k = 0; k<_cols; k++)
+				{
+					val += _data[i][k]*m._data[k][j];
+				}
+				result.set(i, j, val);
 			}
-			result.set(i, j, val);
 		}
+		return result;
 	}
-	return result;
+	catch(){
+		std::cout << "Unable to allocate memory." << std::endl;
+	}
 }
 
 Matrix Matrix::operator-(){
