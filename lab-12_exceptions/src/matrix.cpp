@@ -77,7 +77,7 @@ int Matrix::get(size_t i, size_t j) const{
 	return _data[i][j];
 }
 
-void Matrix::print(std::ostream& f) const{
+void Matrix::print() const{
 	for (size_t i = 0; i<_rows; i++){
 		for (size_t j = 0; j<_cols; j++){
 			if (j==_cols - 1){

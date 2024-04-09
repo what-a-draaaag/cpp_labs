@@ -19,7 +19,7 @@ public:
   size_t get_cols() const;
   void set(size_t i, size_t j, int val);
   int get(size_t i, size_t j) const;
-  void print(std::ostream& f) const;
+  void print() const;
   void load(std::string filename);
 
   Matrix operator+(Matrix& m) const;

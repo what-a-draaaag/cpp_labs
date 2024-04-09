@@ -15,6 +15,9 @@ int get_reg(std::string arg){
 int main(int, char **) {
   std::string cmd, arg1, arg2;
   var_storage vars;
+  for (int i=0; i<10; i++){
+    vars[i] = new Matrix(0,0);
+  }
   try{
     while (std::cin) {
       std::cin >> cmd;
@@ -31,13 +34,12 @@ int main(int, char **) {
         std::string filename;
         std::cin >> arg1 >> filename;
         int reg = get_reg(arg1);
-        vars[reg] = new Matrix(0,0);
         vars[reg]->load(filename);
 
       } else if (cmd == "print") {
         std::cin >> arg1;
         int reg = get_reg(arg1);
-        vars[reg]->print(std::cout);
+        vars[reg]->print();
 
       }else if (cmd == "add") {
         std::cin >> arg1 >> arg2;
