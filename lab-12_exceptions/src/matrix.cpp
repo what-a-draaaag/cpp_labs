@@ -99,13 +99,13 @@ void Matrix::load(std::string filename){
 	unsigned int rows, cols;
 	int elem;
 	if (!(f >> rows >> cols)){
-    	throw MatrixException("LOAD: invalid file formasize_t");
+    	throw MatrixException("LOAD: invalid file format");
 	}
 	Matrix tmp(rows, cols);
     for (size_t i = 0; i < tmp._rows; i++){
      	for (size_t j = 0; j < tmp._cols; j++){
 	  		if (!(f >> elem)){
-	    		throw MatrixException("LOAD: invalid file formasize_t");
+	    		throw MatrixException("LOAD: invalid file format");
 	  		}
     		tmp.set(i, j, elem);
     	}
