@@ -18,8 +18,9 @@ int main(int, char **) {
   for (int i=0; i<10; i++){
     vars[i] = new Matrix(0,0);
   }
-  try{
-    while (std::cin) {
+
+  while (std::cin) {
+    try{
       std::cin >> cmd;
       if (cmd == "exit") {
         break;
@@ -55,7 +56,7 @@ int main(int, char **) {
        }
       
     }
-  }
+  
   catch (std::bad_alloc& e){
     std::cout << "Unable to allocate memory." << std::endl;
   }
@@ -63,6 +64,7 @@ int main(int, char **) {
   catch (MatrixException& e){
     std::cout << e.what() << std::endl;
   }
+}
 
   for (var_storage::iterator it = vars.begin(); it != vars.end(); ++it) {
     delete it->second;
