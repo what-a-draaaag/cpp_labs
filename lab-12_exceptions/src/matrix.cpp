@@ -138,12 +138,13 @@ Matrix Matrix::operator-(Matrix& m) const{
 }
 
 Matrix Matrix::operator*(Matrix& m) const{
-	if (_cols!=m._rows){
-		throw MatrixException("MUL: #arg1.columns != #arg2.rows.");
-	}
-	Matrix result(_rows, m._cols);
+
 	try{
+		if (_cols!=m._rows){
+			throw MatrixException("MUL: #arg1.columns != #arg2.rows.");
+		}
 		
+		Matrix result(_rows, m._cols);
 		for (size_t i=0; i<_rows; i++)
 		{
 			for (size_t j =0; j<m._cols; j++)
@@ -156,12 +157,12 @@ Matrix Matrix::operator*(Matrix& m) const{
 				result.set(i, j, val);
 			}
 		}
+		return result;
 	}
 	catch(std::bad_alloc&){
 		std::cout << "Unable to allocate memory." << std::endl;
 	}
-
-	return result;
+	return *this;
 }
 
 Matrix Matrix::operator-(){
