@@ -58,14 +58,6 @@ void Matrix::swap(Matrix& m){
 }
 
 
-size_t Matrix::get_rows() const{
-	return _rows;
-}
-
-size_t Matrix::get_cols() const{
-	return _cols;
-}
-
 void Matrix::set(size_t i, size_t j, int val){
 	_data[i][j] = val;
 }
@@ -128,50 +120,21 @@ Matrix Matrix::operator+(Matrix& m) const{
 	return result;
 }
 
-
-
-Matrix Matrix::operator-(Matrix& m) const{
-	Matrix tmp(_rows, _cols);
-	tmp = -m;
-	tmp = (*this) + tmp;
-	return tmp;
-}
-
 Matrix Matrix::operator*(Matrix& m) const{
-
-	try{
-		if (_cols!=m._rows){
-			throw MatrixException("MUL: #arg1.columns != #arg2.rows.");
-		}
-		
-		Matrix result(_rows, m._cols);
-		for (size_t i=0; i<_rows; i++)
-		{
-			for (size_t j =0; j<m._cols; j++)
-			{
-				int val = 0;
-				for (size_t k = 0; k<_cols; k++)
-				{
-					val += _data[i][k]*m._data[k][j];
-				}
-				result.set(i, j, val);
-			}
-		}
-		return result;
+	if (_cols!=m._rows){
+		throw MatrixException("MUL: #arg1.columns != #arg2.rows.");
 	}
-	catch(std::bad_alloc&){
-		std::cout << "Unable to allocate memory." << std::endl;
-	}
-	return *this;
-}
-
-Matrix Matrix::operator-(){
-	Matrix result(_rows, _cols);
+	Matrix result(_rows, m._cols);
 	for (size_t i=0; i<_rows; i++)
 	{
-		for (size_t j =0; j<_cols; j++)
+		for (size_t j =0; j<m._cols; j++)
 		{
-			result._data[i][j] = - _data[i][j];
+			int val = 0;
+			for (size_t k = 0; k<_cols; k++)
+			{
+				val += _data[i][k]*m._data[k][j];
+			}
+			result.set(i, j, val);
 		}
 	}
 	return result;
@@ -179,11 +142,6 @@ Matrix Matrix::operator-(){
 
 Matrix& Matrix::operator+=(Matrix& m){
 	*this = (*this) + m;
-	return *this;
-}
-
-Matrix& Matrix::operator-=(Matrix& m){
-	*this = (*this) - m;
 	return *this;
 }
 
