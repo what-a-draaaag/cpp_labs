@@ -16,8 +16,14 @@ Matrix::Matrix(const Matrix& m){
 	_rows = m._rows;
 	_cols = m._cols;
 	_data = new int*[_rows];
+	if (_data==nullptr){
+		throw MatrixException("Unable to allocate memory.");
+	}
 	for (size_t i = 0; i<_rows; i++){
 		_data[i] = new int[_cols];
+		if (_data[i]==nullptr){
+			throw MatrixException("Unable to allocate memory.");
+		}
 	}
 	for (size_t i=0; i<_rows; i++)
 	{
