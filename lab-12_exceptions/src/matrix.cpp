@@ -29,7 +29,7 @@ Matrix::Matrix(const Matrix& m){
 		}
 	}
 	catch(...){
-		std::cout << "Unable to allocate memory." << std::endl;
+		throw MatrixException("Unable to allocate memory.");
 	}
 }
 
