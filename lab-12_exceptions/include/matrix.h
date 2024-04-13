@@ -34,6 +34,7 @@ private:
   int **_data;
   void delete_matrix();
   void swap(Matrix& m);
+  void check_alloc(void* ptr);
 };
 
 

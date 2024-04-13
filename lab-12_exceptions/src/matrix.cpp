@@ -7,14 +7,10 @@ Matrix::Matrix(size_t r, size_t c)
 	_rows = r;
 	_cols = c;
 	_data = new int*[_rows];
-	if (_data == nullptr){
-		throw MatrixException("Unable to allocate memory.");
-	}
+	check_alloc(_data);
 	for (size_t i = 0; i<_rows; i++){
 		_data[i] = new int[_cols]{0};
-		if (_data[i] == nullptr){
-			throw MatrixException("Unable to allocate memory.");
-		}
+		check_alloc(_data[i]);
 	}
 }
 
@@ -22,14 +18,10 @@ Matrix::Matrix(const Matrix& m){
 	_rows = m._rows;
 	_cols = m._cols;
 	_data = new int*[_rows];
-	if (_data == nullptr){
-		throw MatrixException("Unable to allocate memory.");
-	}
+	check_alloc(_data);
 	for (size_t i = 0; i<_rows; i++){
 		_data[i] = new int[_cols];
-		if (_data[i] == nullptr){
-			throw MatrixException("Unable to allocate memory.");
-		}
+		check_alloc(_data[i]);
 	}
 	for (size_t i=0; i<_rows; i++)
 	{
@@ -37,6 +29,12 @@ Matrix::Matrix(const Matrix& m){
 		{
 			_data[i][j] = m._data[i][j];
 		}
+	}
+}
+
+void Matrix::check_alloc(void* ptr){
+	if (ptr == nullptr){
+		throw MatrixException("Unable to allocate memory.");
 	}
 }
 
@@ -58,14 +56,16 @@ void Matrix::swap(Matrix& m){
 	Matrix tmp(m);
 	m.delete_matrix();
 	m._rows = _rows;
-	m._cols = _cols;
+	m._cols = _cols; 
 	m._data = _data;
 	_rows = tmp._rows;
 	_cols = tmp._cols;
 	_data = tmp._data;
 	tmp._data = new int*[tmp._rows];
+	check_alloc(tmp._data);
 	for (size_t i = 0; i<tmp._rows; i++){
 		tmp._data[i] = new int[tmp._cols];
+		check_alloc(tmp._data[i]);	
 	}
 }
 
