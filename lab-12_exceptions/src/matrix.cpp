@@ -13,24 +13,23 @@ Matrix::Matrix(size_t r, size_t c)
 }
 
 Matrix::Matrix(const Matrix& m){
-	_rows = m._rows;
-	_cols = m._cols;
-	_data = new int*[_rows];
-	if (_data==nullptr){
-		throw MatrixException("Unable to allocate memory.");
-	}
-	for (size_t i = 0; i<_rows; i++){
-		_data[i] = new int[_cols];
-		if (_data[i]==nullptr){
-			throw MatrixException("Unable to allocate memory.");
+	try{
+		_rows = m._rows;
+		_cols = m._cols;
+		_data = new int*[_rows];
+		for (size_t i = 0; i<_rows; i++){
+			_data[i] = new int[_cols];
 		}
-	}
-	for (size_t i=0; i<_rows; i++)
-	{
-		for (size_t j =0; j<_cols; j++)
+		for (size_t i=0; i<_rows; i++)
 		{
-			_data[i][j] = m._data[i][j];
+			for (size_t j =0; j<_cols; j++)
+			{
+				_data[i][j] = m._data[i][j];
+			}
 		}
+	}
+	catch(...){
+		std::cout << "Unable to allocate memory." << std::endl;
 	}
 }
 
