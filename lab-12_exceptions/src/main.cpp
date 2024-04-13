@@ -56,7 +56,7 @@ int main(int, char **) {
        }
       
     }
-    catch (std::bad_array_new_length& e){
+    catch (std::bad_alloc& e){
       std::cout << "Unable to allocate memory." << std::endl;
     }
     catch (std::exception& e){

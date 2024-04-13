@@ -7,8 +7,14 @@ Matrix::Matrix(size_t r, size_t c)
 	_rows = r;
 	_cols = c;
 	_data = new int*[_rows];
+	if (_data == nullptr){
+		throw MatrixException("Unable to allocate memory.");
+	}
 	for (size_t i = 0; i<_rows; i++){
 		_data[i] = new int[_cols]{0};
+		if (_data[i] == nullptr){
+			throw MatrixException("Unable to allocate memory.");
+		}
 	}
 }
 
@@ -16,8 +22,14 @@ Matrix::Matrix(const Matrix& m){
 	_rows = m._rows;
 	_cols = m._cols;
 	_data = new int*[_rows];
+	if (_data == nullptr){
+		throw MatrixException("Unable to allocate memory.");
+	}
 	for (size_t i = 0; i<_rows; i++){
 		_data[i] = new int[_cols];
+		if (_data[i] == nullptr){
+			throw MatrixException("Unable to allocate memory.");
+		}
 	}
 	for (size_t i=0; i<_rows; i++)
 	{
