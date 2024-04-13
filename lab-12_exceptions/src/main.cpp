@@ -56,7 +56,7 @@ int main(int, char **) {
        }
       
     }
-    catch (MatrixException& e){
+    catch (std::exception& e){
       std::cout << e.what() << std::endl;
     }
 }
