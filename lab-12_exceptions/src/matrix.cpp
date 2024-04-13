@@ -6,28 +6,20 @@ Matrix::Matrix(size_t r, size_t c)
 {
 	_rows = r;
 	_cols = c;
-	_data = new int*[_rows];
+	_data = new int[_rows * _cols];
 	check_alloc(_data);
-	for (size_t i = 0; i<_rows; i++){
-		_data[i] = new int[_cols]{0};
-		check_alloc(_data[i]);
-	}
 }
 
 Matrix::Matrix(const Matrix& m){
 	_rows = m._rows;
 	_cols = m._cols;
-	_data = new int*[_rows];
+	_data = new int[_rows * _cols];
 	check_alloc(_data);
-	for (size_t i = 0; i<_rows; i++){
-		_data[i] = new int[_cols];
-		check_alloc(_data[i]);
-	}
 	for (size_t i=0; i<_rows; i++)
 	{
 		for (size_t j =0; j<_cols; j++)
 		{
-			_data[i][j] = m._data[i][j];
+			_data[i * _cols + j] = m._data[i * _cols + j];
 		}
 	}
 }
@@ -61,34 +53,30 @@ void Matrix::swap(Matrix& m){
 	_rows = tmp._rows;
 	_cols = tmp._cols;
 	_data = tmp._data;
-	tmp._data = new int*[tmp._rows];
+	tmp._data = new int[tmp._rows * tmp._cols];
 	check_alloc(tmp._data);
-	for (size_t i = 0; i<tmp._rows; i++){
-		tmp._data[i] = new int[tmp._cols];
-		check_alloc(tmp._data[i]);	
-	}
 }
 
 
 void Matrix::set(size_t i, size_t j, int val){
-	_data[i][j] = val;
+	_data[i * _cols + j] = val;
 }
 
 int Matrix::get(size_t i, size_t j) const{
 	if (i>=_rows || j >= _cols || i<0 || j<0){
 		throw MatrixException("ACCESS: bad index.");
 	}
-	return _data[i][j];
+	return _data[i * _cols + j];
 }
 
 void Matrix::print() const{
 	for (size_t i = 0; i<_rows; i++){
 		for (size_t j = 0; j<_cols; j++){
 			if (j==_cols - 1){
-				std::cout << _data[i][j];
+				std::cout << _data[i * _cols + j];
 			}
 			else{
-			    std::cout << _data[i][j] << " ";
+			    std::cout << _data[i * _cols + j] << " ";
 			}
 		}
 		std::cout << std::endl;
@@ -126,7 +114,7 @@ Matrix Matrix::operator+(Matrix& m) const{
 	{
 		for (size_t j =0; j<_cols; j++)
 		{
-			result._data[i][j] = _data[i][j] + m._data[i][j];
+			result._data[i * _cols + j] = _data[i * _cols + j] + m._data[i * _cols + j];
 		}
 	}
 	return result;
@@ -144,7 +132,7 @@ Matrix Matrix::operator*(Matrix& m) const{
 			int val = 0;
 			for (size_t k = 0; k<_cols; k++)
 			{
-				val += _data[i][k]*m._data[k][j];
+				val += _data[i * _cols + k]*m._data[k * m._cols + j];
 			}
 			result.set(i, j, val);
 		}
@@ -171,7 +159,7 @@ bool Matrix::operator==(Matrix& m) const{
 	{
 		for (size_t j =0; j<_cols; j++)
 		{
-			if (_data[i][j]!= m._data[i][j])
+			if (_data[i * _cols + j] !=  m._data[i * _cols + j])
 			{
 				return false;
 			}
@@ -185,10 +173,6 @@ bool Matrix::operator!=(Matrix& m) const{
 }
 
 void Matrix::delete_matrix(){
-	for (size_t i=0; i<_rows; i++)
-	{
-		delete [] _data[i];
-	}
 	delete [] _data;
 }
 

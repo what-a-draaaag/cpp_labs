@@ -31,7 +31,7 @@ public:
 private:
   size_t _rows;
   size_t _cols;
-  int **_data;
+  int *_data;
   void delete_matrix();
   void swap(Matrix& m);
   void check_alloc(void* ptr);
