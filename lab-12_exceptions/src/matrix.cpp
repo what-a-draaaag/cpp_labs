@@ -13,30 +13,25 @@ Matrix::Matrix(size_t r, size_t c)
 }
 
 Matrix::Matrix(const Matrix& m){
-	try{
-		_rows = m._rows;
-		_cols = m._cols;
-		_data = new int*[_rows];
-		if (_data == nullptr){
+	_rows = m._rows;
+	_cols = m._cols;
+	_data = new int*[_rows];
+	if (_data == nullptr){
+		throw MatrixException("");
+	}
+	std::cout << "s" <<std::endl;
+	for (size_t i = 0; i<_rows; i++){
+		_data[i] = new int[_cols];
+		if (_data[i] == nullptr){
 			throw MatrixException("");
 		}
-		for (size_t i = 0; i<_rows; i++){
-			_data[i] = new int[_cols];
-			if (_data[i] == nullptr){
-				throw MatrixException("");
-			}
-		}
-		for (size_t i=0; i<_rows; i++)
-		{
-			for (size_t j =0; j<_cols; j++)
-			{
-				_data[i][j] = m._data[i][j];
-			}
-		}
 	}
-	catch(...){
-		std::cout << "Unable to allocate memory." << std::endl;
-		//throw MatrixException("Unable to allocate memory.");
+	for (size_t i=0; i<_rows; i++)
+	{
+		for (size_t j =0; j<_cols; j++)
+		{
+			_data[i][j] = m._data[i][j];
+		}
 	}
 }
 
@@ -100,7 +95,7 @@ void Matrix::load(std::string filename){
 	if (!f.good()){
 		throw MatrixException("LOAD: unable to open file.");
 	}
-	unsigned int rows, cols;
+	size_t rows, cols;
 	int elem;
 	if (!(f >> rows >> cols)){
     	throw MatrixException("LOAD: invalid file format.");
@@ -136,26 +131,21 @@ Matrix Matrix::operator*(Matrix& m) const{
 	if (_cols!=m._rows){
 		throw MatrixException("MUL: #arg1.columns != #arg2.rows.");
 	}
-	try{
-		Matrix result(_rows, m._cols);
-		for (size_t i=0; i<_rows; i++)
+	Matrix result(_rows, m._cols);
+	for (size_t i=0; i<_rows; i++)
+	{
+		for (size_t j =0; j<m._cols; j++)
 		{
-			for (size_t j =0; j<m._cols; j++)
+			int val = 0;
+			for (size_t k = 0; k<_cols; k++)
 			{
-				int val = 0;
-				for (size_t k = 0; k<_cols; k++)
-				{
-					val += _data[i][k]*m._data[k][j];
-				}
-				result.set(i, j, val);
+				val += _data[i][k]*m._data[k][j];
 			}
+			result.set(i, j, val);
 		}
-		return result;
 	}
-	catch(...){
-		std::cout << "Unable to allocate memory." << std::endl;
-	}
-	return *this;
+	return result;
+
 }
 
 Matrix& Matrix::operator+=(Matrix& m){
