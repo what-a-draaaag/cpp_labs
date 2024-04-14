@@ -94,12 +94,6 @@ class my_array<bool, N>{
 public:
     my_array() = default;
 
-    my_array(const my_array& other){
-        for (int i=0; i<N; i++){
-            data[i] = other.data[i];
-        }
-    }
-
     proxy_bool operator[](std::size_t index){
         return proxy_bool(index%8, data[index/8]);
     }
@@ -130,8 +124,9 @@ public:
     }
 
     void fill(bool val){
-        for (size_t i = 0; i< N/8; i++){
-            data[i] = val? -1 : 0;
+        char byte_value = val?-1:0;
+        for (size_t i = 0; i< (N/8 + (N%8)!=0?1:0); i++){
+            data[i] = byte_value;
         }
     }
 
