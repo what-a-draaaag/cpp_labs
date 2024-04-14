@@ -125,7 +125,7 @@ public:
 
     void fill(bool val){
         char byte_value = val?-1:0;
-        for (size_t i = 0; i< (N/8 + (N%8)!=0?1:0); i++){
+        for (size_t i = 0; i< (N/8 + ((N%8)!=0?1:0)); i++){
             data[i] = byte_value;
         }
     }
@@ -133,7 +133,7 @@ public:
     friend proxy_bool;
 
 private:
-    char data[N/8 + (N%8)!=0?1:0]{};
+    char data[N/8 + ((N%8)!=0?1:0)]{};
 };
 
 
