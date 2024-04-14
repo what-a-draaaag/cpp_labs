@@ -1,5 +1,4 @@
 #include "my_array.h"
-#include <cstddef>
 
 using lab_13::my_array;
 
