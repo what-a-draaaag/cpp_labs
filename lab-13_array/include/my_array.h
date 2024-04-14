@@ -17,7 +17,7 @@ public:
     }
 
     T& at(size_t index){
-        if (index>=N){
+        if (index>=N || index<0){
             throw std::out_of_range("Index out of range.");
         }
         return data[index];
@@ -28,7 +28,7 @@ public:
     }
 
     const T& at(size_t index) const{
-        if (index>=N){
+        if (index>=N || index<0){
             throw std::out_of_range("Index out of range.");
         }
         return data[index];
@@ -105,7 +105,7 @@ public:
     }
 
     proxy_bool at(std::size_t index){
-        if (index>=N){
+        if (index>=N || index<0){
             throw std::out_of_range("Index out of range.");
         }
         return (*this)[index];
@@ -116,7 +116,7 @@ public:
     }
 
     bool at(std::size_t index) const{
-        if (index>=N){
+        if (index>=N || index<0){
             throw std::out_of_range("Index out of range.");
         }
         return (*this)[index];
@@ -138,7 +138,7 @@ public:
     friend proxy_bool;
 
 private:
-    char data[N/8 + (N%8)/8]{};
+    char data[N/8 + (N%8)!=0?1:0]{};
 };
 
 
