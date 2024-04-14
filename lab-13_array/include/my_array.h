@@ -88,7 +88,7 @@ private:
 
 
 
-
+/*
 template <std::size_t N>
 class my_array<bool, N>{
 public:
@@ -136,13 +136,13 @@ public:
     }
 
     friend proxy_bool;
-    
+
 private:
     char data[N/8 + (N%8)/8]{};
 };
 
 
-
+*/
 
 
 }  // namespace lab_13
