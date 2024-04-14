@@ -5,36 +5,36 @@
 
 namespace lab_13 {
 
-template<typename T, std::size_t N>
+template<typename T, size_t N>
 class my_array {
 public:
 
     my_array() = default;
     my_array(const my_array& other){
-        for (int i=0; i<N; i++){
+        for (size_t i=0; i<N; i++){
             data[i] = other.data[i];
         }
     }
 
-    T& at(std::size_t index){
+    T& at(size_t index){
         if (index>=N){
             throw std::out_of_range("Index out of range.");
         }
         return data[index];
     }
 
-    T& operator[](std::size_t index){
+    T& operator[](size_t index){
         return data[index];
     }
 
-    const T& at(std::size_t index) const{
+    const T& at(size_t index) const{
         if (index>=N){
             throw std::out_of_range("Index out of range.");
         }
         return data[index];
     }
 
-    const T& operator[](std::size_t index) const{
+    const T& operator[](size_t index) const{
         return data[index];
     }
 
@@ -58,13 +58,10 @@ private:
 
 class proxy_bool{
 public:
-    proxy_bool(int index, char& byte): index(index), byte(byte) {}
+    proxy_bool(size_t index, char& byte): index(index), byte(byte) {}
 
     operator bool() const{
-        if (byte>>index){
-            return 1;
-        }
-        return 0;
+        return get_bit();
     }
     proxy_bool& operator=(const proxy_bool& other){
         *this = bool(other);
@@ -82,13 +79,16 @@ public:
     }
 
 private:
-    int index;
+    size_t index;
     char& byte;
+    bool get_bit() const{
+        return (byte >> index)& 1;
+    }
 };
 
 
 
-/*
+
 template <std::size_t N>
 class my_array<bool, N>{
 public:
@@ -112,7 +112,7 @@ public:
     }
 
     bool operator[](std::size_t index) const{
-        return (data[index/8]>>index)?1:0;
+        return (data[index/8]>>index%8)?1:0;
     }
 
     bool at(std::size_t index) const{
@@ -142,7 +142,7 @@ private:
 };
 
 
-*/
+
 
 
 }  // namespace lab_13
