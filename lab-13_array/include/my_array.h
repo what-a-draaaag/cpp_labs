@@ -126,8 +126,8 @@ public:
     }
 
     void fill(bool val){
-        unsigned char byte_value = !!val;
-        for (size_t i = 0; i< (N/bits_in_byte + !!(N%bits_in_byte)); i++){
+        unsigned char byte_value = val?-1:0;
+        for (size_t i = 0; i< (N/bits_in_byte + ((N%bits_in_byte)!=0?1:0)); i++){
             data[i] = byte_value;
         }
     }
@@ -135,7 +135,7 @@ public:
     friend proxy_bool;
 
 private:
-    unsigned char data[N/bits_in_byte + !!(N%bits_in_byte)]{};
+    unsigned char data[N/bits_in_byte + ((N%bits_in_byte)!=0?1:0)]{};
 };
 
 
