@@ -5,6 +5,8 @@
 
 namespace lab_13 {
 
+const int bits_in_byte = 8;
+
 template<typename T, size_t N>
 class my_array {
 public:
@@ -95,7 +97,7 @@ public:
     my_array() = default;
 
     proxy_bool operator[](std::size_t index){
-        return proxy_bool(index%8, data[index/8]);
+        return proxy_bool(index%bits_in_byte, data[index/bits_in_byte]);
     }
 
     proxy_bool at(std::size_t index){
@@ -106,7 +108,7 @@ public:
     }
 
     bool operator[](std::size_t index) const{
-        return (data[index/8]>>index%8)?1:0;
+        return (data[index/bits_in_byte]>>(index%bits_in_byte))&1;
     }
 
     bool at(std::size_t index) const{
@@ -124,8 +126,8 @@ public:
     }
 
     void fill(bool val){
-        unsigned char byte_value = val?-1:0;
-        for (size_t i = 0; i< (N/8 + ((N%8)!=0?1:0)); i++){
+        unsigned char byte_value = !!val;
+        for (size_t i = 0; i< (N/bits_in_byte + !!(N%bits_in_byte)); i++){
             data[i] = byte_value;
         }
     }
@@ -133,7 +135,7 @@ public:
     friend proxy_bool;
 
 private:
-    unsigned char data[N/8 + ((N%8)!=0?1:0)]{};
+    unsigned char data[N/bits_in_byte + !!(N%bits_in_byte)]{};
 };
 
 
