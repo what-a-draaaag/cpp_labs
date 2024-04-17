@@ -58,7 +58,7 @@ private:
 
 class proxy_bool{
 public:
-    proxy_bool(size_t index, char& byte): index(index), byte(byte) {}
+    proxy_bool(size_t index, unsigned char& byte): index(index), byte(byte) {}
 
     operator bool() const{
         return get_bit();
@@ -80,7 +80,7 @@ public:
 
 private:
     size_t index;
-    char& byte;
+    unsigned char& byte;
     bool get_bit() const{
         return (byte >> index)& 1;
     }
@@ -124,7 +124,7 @@ public:
     }
 
     void fill(bool val){
-        char byte_value = val?-1:0;
+        unsigned char byte_value = val?-1:0;
         for (size_t i = 0; i< (N/8 + ((N%8)!=0?1:0)); i++){
             data[i] = byte_value;
         }
@@ -133,7 +133,7 @@ public:
     friend proxy_bool;
 
 private:
-    char data[N/8 + ((N%8)!=0?1:0)]{};
+    unsigned char data[N/8 + ((N%8)!=0?1:0)]{};
 };
 
 
