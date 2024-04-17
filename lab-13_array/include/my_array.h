@@ -6,6 +6,7 @@
 namespace lab_13 {
 
 const int bits_in_byte = 8;
+const unsigned char all_true = -1;
 
 template<typename T, size_t N>
 class my_array {
@@ -126,8 +127,8 @@ public:
     }
 
     void fill(bool val){
-        unsigned char byte_value = val?-1:0;
-        for (size_t i = 0; i< (N/bits_in_byte + ((N%bits_in_byte)!=0?1:0)); i++){
+        unsigned char byte_value = val?all_true:0;
+        for (size_t i = 0; i< (N/bits_in_byte + ((N%bits_in_byte)!=0)); i++){
             data[i] = byte_value;
         }
     }
@@ -135,7 +136,7 @@ public:
     friend proxy_bool;
 
 private:
-    unsigned char data[N/bits_in_byte + ((N%bits_in_byte)!=0?1:0)]{};
+    unsigned char data[N/bits_in_byte + ((N%bits_in_byte)!=0)]{};
 };
 
 
