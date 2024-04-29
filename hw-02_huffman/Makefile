@@ -4,11 +4,13 @@ LDFLAGS =
 
 EXE = hw-02_huffman
 SRCDIR = src
+TEST = hw-02_huffman_test
 BINDIR = obj
 
 OBJECTS = $(patsubst $(SRCDIR)/%.cpp,$(BINDIR)/%.o,$(wildcard $(SRCDIR)/*.cpp))
+TEST_OBJECTS = $(filter-out $(OBJDIR)/main.o, $(OBJECTS))
 
-all: $(EXE)
+all: $(EXE) $(TEST)
 
 $(EXE): $(BINDIR) $(OBJECTS)
 	$(CXX) $(OBJECTS) -o $(EXE) $(LDFLAGS)
@@ -16,10 +18,12 @@ $(EXE): $(BINDIR) $(OBJECTS)
 $(BINDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c -MMD -o $@ $<
 
-include $(wildcard $(BINDIR)/*.d)
+
+$(TEST): $(TEST_OBJECTS)
+	$(CXX) $(TEST_OBJECTS) -o $(TEST) $(LDFLAGS)
 
 $(BINDIR):
 	mkdir -p $(BINDIR)
 
 clean:
-	rm -rf $(BINDIR) $(EXE)
+	rm -rf $(BINDIR) $(EXE) $(TEST)

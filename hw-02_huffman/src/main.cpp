@@ -7,6 +7,7 @@
 
 int main(int argc, char** argv){
 	args_parser parser;
+	huffman_compressor compressor;
 	try{
 		parser.parse(argc, argv);
 	}
@@ -19,7 +20,7 @@ int main(int argc, char** argv){
 		return 0;
 	}
 	std::ifstream fin(parser.fin_name);
-	std::ifstream fout(parser.fout_name);
+	std::ofstream fout(parser.fout_name);
 
 	if (!fin.is_open() || ! fout.is_open()){
 		std::cout << "Opening files failed." << std::endl;
@@ -27,10 +28,10 @@ int main(int argc, char** argv){
 	}
 
 	if (parser.action == compress){
-
+		compressor.compress(fin, fout);
 	}
 	else if (parser.action == decompress){
-
+		compressor.decompress(fin, fout);
 	}
 	else{
 		std::cout << "Type of processing files is unknown."<<std::endl;

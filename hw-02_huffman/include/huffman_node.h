@@ -2,8 +2,8 @@
 
 class huffman_node{
 public:
-	char value;
-	int frequency;
+	char value = '\0';
+	int frequency = 0;
 	bool is_leaf = true;
 	huffman_node* left;
 	huffman_node* right;

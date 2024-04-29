@@ -3,7 +3,6 @@
 #include <cstring>
 
 
-
 enum action_type{
 	compress,
 	decompress,

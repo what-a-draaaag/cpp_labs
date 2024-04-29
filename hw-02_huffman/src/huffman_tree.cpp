@@ -9,6 +9,7 @@ void huffman_tree::build(std::vector<char> data){
 	for (char symbol : data){
 		frequencies[symbol]++;
 	}
+	nodes.clear();
 	for (auto symbol : frequencies){
 		nodes.push_back(new huffman_node(symbol.first, symbol.second, nullptr, nullptr));
 	}
@@ -16,7 +17,7 @@ void huffman_tree::build(std::vector<char> data){
 	while (nodes.size() >1){
 		//huffman_node* left = nodes.back();
 		nodes.pop_back();
-		// huffman_node* right = nodes.back();
+		//huffman_node* right = nodes.back();
 		nodes.pop_back();
 	}
 	root = nodes.back();
@@ -24,4 +25,9 @@ void huffman_tree::build(std::vector<char> data){
 
 int huffman_tree::get_size(){
 	return nodes.size();
+}
+
+std::vector<char> huffman_tree::make_table(){
+	std::vector<char> empty;
+	return empty;
 }
