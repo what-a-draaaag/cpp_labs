@@ -1,33 +1,28 @@
 #include "huffman_tree.h"
 
-bool comparator(huffman_node* first, huffman_node* second){
-	return first->frequency > second->frequency;
-}
-
-void huffman_tree::build(std::vector<char> data){
-	std::map<char, int> frequencies;
-	for (char symbol : data){
-		frequencies[symbol]++;
+huffman_tree::huffman_tree(std::map<char, unsigned int> frequancies){
+	std::set<std::pair<std::vector<char>, unsigned int>> tree;
+	for (auto symbol : frequancies){
+		std::vector<char> ch{symbol.first};
+		tree.insert(std::make_pair(ch, symbol.second));
 	}
-	nodes.clear();
-	for (auto symbol : frequencies){
-		nodes.push_back(new huffman_node(symbol.first, symbol.second, nullptr, nullptr));
+	while (tree.size()>1){
+		std::pair<std::vector<char>, unsigned int> first = *tree.begin();
+		tree.erase(first);
+		std::pair<std::vector<char>, unsigned int> second = *tree.begin();
+		tree.erase(second);
+		for (auto ch : first.first){
+			table[ch].push_back(0);
+		}
+		for (auto ch : second.first){
+			table[ch].push_back(1);
+		}
+		std::vector<char> new_elem = first.first;
+		new_elem.insert(new_elem.end(), second.first.begin(), second.first.end());
+		tree.insert(std::make_pair(new_elem, first.second+second.second));
 	}
-	std::sort(nodes.begin(), nodes.end(), comparator);
-	while (nodes.size() >1){
-		//huffman_node* left = nodes.back();
-		nodes.pop_back();
-		//huffman_node* right = nodes.back();
-		nodes.pop_back();
+
+	for (auto pair: tree){
+		std::reverse(pair.first.begin(), pair.first.end());
 	}
-	root = nodes.back();
-}
-
-int huffman_tree::get_size(){
-	return nodes.size();
-}
-
-std::vector<char> huffman_tree::make_table(){
-	std::vector<char> empty;
-	return empty;
 }
