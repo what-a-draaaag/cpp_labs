@@ -12,10 +12,10 @@ class huffman_tree{
 public:
 	class Table{
 	public:
-		std::map<char, std::vector<bool>> code_vectors;
-		std::map<char, std::string> codes;
-		std::vector<bool> bits;
-		Table() = default;
+		std::map<char, std::vector<bool>> code_vectors = {};
+		std::map<char, std::string> codes = {};
+		std::vector<bool> bits ={};
+		Table() = default;;
 
 		std::string get_code(char ch);
 		void make_codes();

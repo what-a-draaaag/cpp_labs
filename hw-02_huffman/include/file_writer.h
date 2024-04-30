@@ -2,6 +2,7 @@
 
 #include "huffman_tree.h"
 #include <fstream>
+#include <iostream>
 #include <cmath>
 
 class file_writer{

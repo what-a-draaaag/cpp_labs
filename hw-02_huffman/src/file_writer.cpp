@@ -9,13 +9,14 @@ file_writer::file_writer(std::ofstream& out): out(out) {}
 uint8_t get_byte(std::vector<bool> bits, unsigned int index){
 	uint8_t res = 0;
 	for (unsigned int i = 0; i< bits_in_byte; i++){
-		if ((index*bits_in_byte+i)<bits.size())
-			res += bits[index*bits_in_byte+i] * pow(2, 7-i);
+		if ((index*bits_in_byte+i)<bits.size()){
+			res += bits[index*bits_in_byte+i] << (7-i);
+		}
 	}
 
 	//BUGS????
 
-
+	
 	return res;
 }
 
@@ -35,7 +36,7 @@ std::vector<bool> encode_data(std::vector<char>& data, huffman_tree::Table& tabl
 
 void file_writer::write_table(huffman_tree::Table& table){
 	unsigned int size_of_table = table.size();
-	out.write(reinterpret_cast<const char*>(size_of_table), 4);
+	out.write(reinterpret_cast<char const*>(&size_of_table), 4);
 	unsigned int size_in_bytes = (size_of_table-1)/8 +1;
 	for (unsigned int i = 0; i< size_in_bytes; i++){
 		uint8_t byte = get_byte(table.bits, i);
@@ -46,7 +47,7 @@ void file_writer::write_table(huffman_tree::Table& table){
 void file_writer::write_data(std::vector<char>& data, huffman_tree::Table& table){
 	std::vector<bool> encoded_data = encode_data(data, table);
 	unsigned int size_of_data = encoded_data.size();
-	out.write(reinterpret_cast<const char*>(size_of_data), 4);
+	out.write(reinterpret_cast<const char*>(&size_of_data), 4);
 	unsigned int size_in_bytes = (size_of_data-1)/8 +1;
 	for (unsigned int i = 0; i< size_in_bytes; i++){
 		uint8_t byte = get_byte(encoded_data, i);

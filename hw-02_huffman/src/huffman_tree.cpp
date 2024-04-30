@@ -30,6 +30,7 @@ huffman_tree::huffman_tree(std::map<char, unsigned int> frequancies){
 	}
 }
 
+
 std::string huffman_tree::Table::get_code(char ch){
 	return codes[ch];
 }

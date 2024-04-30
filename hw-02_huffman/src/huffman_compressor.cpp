@@ -20,10 +20,11 @@ void huffman_compressor::compress(std::ifstream& in, std::ofstream& out){
 	std::map<char, unsigned int> frequancies;
 	read_data(in, data, frequancies);
 	huffman_tree ht(frequancies);
-	huffman_tree::Table table = ht.table;
+	ht.table.to_bits();
+	ht.table.make_codes();
 	file_writer fw(out);
-	fw.write_table(table);
-	fw.write_data(data, table);
+	fw.write_table(ht.table);
+	fw.write_data(data, ht.table);
 }
 
 
