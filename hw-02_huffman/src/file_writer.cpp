@@ -34,6 +34,20 @@ std::vector<bool> encode_data(std::vector<char>& data, huffman_tree::Table& tabl
 }
 
 
+bool file_writer::is_useful(huffman_tree& ht, huffman_tree::Table& table,  std::vector<char>& data){
+	int data_size = data.size();
+	int table_size = (table.size()-1)/8+1;
+	int sizes_values_size = 2*sizeof(unsigned int);
+	int encoded_data_size = (encode_data(data, table).size()-1)/8+1;
+	if (data_size<= (table_size+sizes_values_size+encoded_data_size)){
+		ht.statistics.push_back(0);
+		ht.statistics.push_back(data_size);
+		return false;
+	}
+	return true;
+}
+
+
 void file_writer::write_table(huffman_tree& ht, huffman_tree::Table& table){
 	unsigned int size_of_table = table.size();
 	out.write(reinterpret_cast<char const*>(&size_of_table), 4);

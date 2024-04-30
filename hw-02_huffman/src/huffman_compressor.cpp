@@ -25,8 +25,10 @@ void huffman_compressor::compress(){
 	ht.table.to_bits();
 	ht.table.make_codes();
 	file_writer fw(out);
-	fw.write_table(ht, ht.table);
-	fw.write_data(ht, data, ht.table);
+	if (fw.is_useful(ht, ht.table, data)){
+		fw.write_table(ht, ht.table);
+		fw.write_data(ht, data, ht.table);
+	}
 	ht.print_statistics();
 }
 
