@@ -7,7 +7,6 @@
 
 int main(int argc, char** argv){
 	args_parser parser;
-	huffman_compressor compressor;
 	try{
 		parser.parse(argc, argv);
 	}
@@ -27,14 +26,17 @@ int main(int argc, char** argv){
 		return 0;
 	}
 
+	huffman_compressor compressor(fin, fout);
+
 	if (parser.action == compress){
-		compressor.compress(fin, fout);
+		compressor.compress();
 	}
 	else if (parser.action == decompress){
-		compressor.decompress(fin, fout);
+		compressor.decompress();
 	}
 	else{
 		std::cout << "Type of processing files is unknown."<<std::endl;
 		return 0;
 	}
+	return 0;
 }

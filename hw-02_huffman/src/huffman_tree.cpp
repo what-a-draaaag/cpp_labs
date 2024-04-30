@@ -76,3 +76,7 @@ std::vector<bool> huffman_tree::Table::to_bits(){
 	bits = bits_in_vector;
 	return bits_in_vector;
 }
+
+void huffman_tree::print_statistics(){
+	std::for_each(statistics.begin(), statistics.end(), [](int i){std::cout << i << std::endl;});
+}

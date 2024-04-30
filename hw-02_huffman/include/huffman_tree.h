@@ -4,6 +4,8 @@
 #include <map>
 #include <algorithm>
 #include <set>
+#include <iostream>
+
 
 
 
@@ -25,7 +27,9 @@ public:
 	};
 
 
-	Table table;
+	Table table;    	
+	std::vector<int> statistics = {};
+    void print_statistics();
 
 	huffman_tree(std::map<char, unsigned int> frequancies);
 

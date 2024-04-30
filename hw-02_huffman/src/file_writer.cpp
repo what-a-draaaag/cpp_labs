@@ -34,21 +34,23 @@ std::vector<bool> encode_data(std::vector<char>& data, huffman_tree::Table& tabl
 }
 
 
-void file_writer::write_table(huffman_tree::Table& table){
+void file_writer::write_table(huffman_tree& ht, huffman_tree::Table& table){
 	unsigned int size_of_table = table.size();
 	out.write(reinterpret_cast<char const*>(&size_of_table), 4);
 	unsigned int size_in_bytes = (size_of_table-1)/8 +1;
+	ht.statistics.push_back(size_in_bytes);
 	for (unsigned int i = 0; i< size_in_bytes; i++){
 		uint8_t byte = get_byte(table.bits, i);
 		out.put(byte);
 	}
 }
 
-void file_writer::write_data(std::vector<char>& data, huffman_tree::Table& table){
+void file_writer::write_data(huffman_tree& ht, std::vector<char>& data, huffman_tree::Table& table){
 	std::vector<bool> encoded_data = encode_data(data, table);
 	unsigned int size_of_data = encoded_data.size();
 	out.write(reinterpret_cast<const char*>(&size_of_data), 4);
 	unsigned int size_in_bytes = (size_of_data-1)/8 +1;
+	ht.statistics.push_back(size_in_bytes);
 	for (unsigned int i = 0; i< size_in_bytes; i++){
 		uint8_t byte = get_byte(encoded_data, i);
 		out.put(byte);

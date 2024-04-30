@@ -11,6 +11,6 @@ public:
 
 	std::ofstream& out;
 
-	void write_table(huffman_tree::Table& table);
-	void write_data(std::vector<char>& data, huffman_tree::Table& table);
+	void write_table(huffman_tree& ht, huffman_tree::Table& table);
+	void write_data(huffman_tree& ht, std::vector<char>& data, huffman_tree::Table& table);
 };

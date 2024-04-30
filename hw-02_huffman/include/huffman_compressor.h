@@ -7,6 +7,11 @@
 
 class huffman_compressor{
 public:
-    void compress(std::ifstream& in, std::ofstream& out);
-    void decompress(std::ifstream& in, std::ofstream& out);  
+    std::ifstream& in;
+    std::ofstream& out;
+
+    huffman_compressor(std::ifstream& in, std::ofstream& out);
+
+    void compress();
+    void decompress();  
 };
