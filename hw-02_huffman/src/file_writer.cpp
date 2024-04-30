@@ -38,7 +38,7 @@ void file_writer::write_table(huffman_tree& ht, huffman_tree::Table& table){
 	unsigned int size_of_table = table.size();
 	out.write(reinterpret_cast<char const*>(&size_of_table), 4);
 	unsigned int size_in_bytes = (size_of_table-1)/8 +1;
-	ht.statistics.push_back(size_in_bytes);
+	ht.statistics.push_back(size_in_bytes + sizeof(unsigned int)*2);
 	for (unsigned int i = 0; i< size_in_bytes; i++){
 		uint8_t byte = get_byte(table.bits, i);
 		out.put(byte);
