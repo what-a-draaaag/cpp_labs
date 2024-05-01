@@ -17,24 +17,12 @@ uint8_t get_byte(std::vector<bool> bits, unsigned int index){
 }
 
 
-std::vector<bool> encode_data(std::vector<char>& data, huffman_tree::Table& table){
-	std::vector<bool> encoded_bits;
-	for (auto ch: data){
-		int code_size = table.get_code_len(ch);
-		std::string code = table.get_code(ch);
-		for (int i = 0; i< code_size; i++){
-			encoded_bits.push_back(code[i]);
-		}
-	}
-	return encoded_bits;
-}
-
-
 bool file_writer::is_useful(huffman_tree& ht, huffman_tree::Table& table,  std::vector<char>& data){
+	encoder enc(data, table);
 	int data_size = data.size();
 	int table_size = (table.size()-1)/8+1;
 	int sizes_values_size = 2*sizeof(unsigned int);
-	int encoded_data_size = (encode_data(data, table).size()-1)/8+1;
+	int encoded_data_size = (enc.encode_data().size()-1)/8+1;
 	if (data_size<= (table_size+sizes_values_size+encoded_data_size)){
 		ht.statistics.push_back(data_size);
 		ht.statistics.push_back(0);
@@ -60,7 +48,8 @@ void file_writer::write_table(huffman_tree& ht, huffman_tree::Table& table){
 }
 
 void file_writer::write_data_compress(huffman_tree& ht, std::vector<char>& data, huffman_tree::Table& table){
-	std::vector<bool> encoded_data = encode_data(data, table);
+	encoder enc(data, table);
+	std::vector<bool> encoded_data = enc.encode_data();
 	unsigned int size_of_data = encoded_data.size();
 	out.write(reinterpret_cast<const char*>(&size_of_data), 4);
 	unsigned int size_in_bytes = (size_of_data-1)/8 +1;

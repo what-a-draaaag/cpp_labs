@@ -1,6 +1,7 @@
 #pragma once
 
 #include "huffman_tree.h"
+#include "encoder.h"
 #include <fstream>
 #include <iostream>
 #include <cmath>
