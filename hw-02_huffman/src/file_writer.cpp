@@ -13,10 +13,6 @@ uint8_t get_byte(std::vector<bool> bits, unsigned int index){
 			res += bits[index*bits_in_byte+i] << (7-i);
 		}
 	}
-
-	//BUGS????
-
-	
 	return res;
 }
 
@@ -63,7 +59,7 @@ void file_writer::write_table(huffman_tree& ht, huffman_tree::Table& table){
 	}
 }
 
-void file_writer::write_data(huffman_tree& ht, std::vector<char>& data, huffman_tree::Table& table){
+void file_writer::write_data_compress(huffman_tree& ht, std::vector<char>& data, huffman_tree::Table& table){
 	std::vector<bool> encoded_data = encode_data(data, table);
 	unsigned int size_of_data = encoded_data.size();
 	out.write(reinterpret_cast<const char*>(&size_of_data), 4);
@@ -75,3 +71,8 @@ void file_writer::write_data(huffman_tree& ht, std::vector<char>& data, huffman_
 	
 }
 
+void file_writer::write_data_decompress(std::vector<char>& data){
+	for (char ch : data){
+		out.put(ch);
+	}
+}

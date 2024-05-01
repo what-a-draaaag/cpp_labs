@@ -24,10 +24,18 @@ huffman_tree::huffman_tree(std::map<char, unsigned int> frequancies){
 		new_elem.insert(new_elem.end(), second.second.begin(), second.second.end());
 		tree.insert(std::make_pair(first.first+second.first, new_elem));
 	}
-
+	if (tree.size() == 1){
+		std::pair<unsigned int, std::vector<char>> first = *tree.begin();
+		tree.erase(first);
+		for (auto ch : first.second){
+			table.code_vectors[ch].push_back(0);
+		}
+	}
 	for (auto pair: tree){
 		std::reverse(pair.second.begin(), pair.second.end());
 	}
+	table.to_bits();
+	table.make_codes();
 }
 
 

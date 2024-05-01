@@ -13,5 +13,6 @@ public:
 
 	bool is_useful(huffman_tree& ht, huffman_tree::Table& table,  std::vector<char>& data);
 	void write_table(huffman_tree& ht, huffman_tree::Table& table);
-	void write_data(huffman_tree& ht, std::vector<char>& data, huffman_tree::Table& table);
+	void write_data_compress(huffman_tree& ht, std::vector<char>& data, huffman_tree::Table& table);
+	void write_data_decompress(std::vector<char>& data);
 };

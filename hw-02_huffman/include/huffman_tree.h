@@ -6,10 +6,6 @@
 #include <set>
 #include <iostream>
 
-
-
-
-
 class huffman_tree{
 public:
 	class Table{
@@ -26,11 +22,11 @@ public:
 		std::vector<bool> to_bits();
 	};
 
-
 	Table table;    	
 	std::vector<int> statistics = {};
     void print_statistics();
 
 	huffman_tree(std::map<char, unsigned int> frequancies);
+	huffman_tree() = default;
 
 };

@@ -2,6 +2,10 @@
 #include <vector>
 #include <ostream>
 #include <istream>
+#include "huffman_tree.h"
+#include "file_writer.h"
+#include "file_reader.h"
+#include <fstream>
 
 
 

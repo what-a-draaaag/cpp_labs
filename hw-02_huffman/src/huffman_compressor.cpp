@@ -1,42 +1,33 @@
 #include "huffman_compressor.h"
-#include "huffman_tree.h"
-#include "file_writer.h"
-#include <fstream>
 
 huffman_compressor::huffman_compressor(std::ifstream& in, std::ofstream& out): in(in), out(out) {}
-
-void read_data(std::ifstream& in, std::vector<char>& data, std::map<char, unsigned int>& frequencies){
-	char c;
-	while (in.get(c)){
-		data.push_back(c);
-		frequencies[c]++;
-	}
-}
-
-
 
 void huffman_compressor::compress(){
 	std::vector<char> data;
 	std::map<char, unsigned int> frequencies;
-	read_data(in, data, frequencies);
-	huffman_tree ht(frequencies);
+    file_reader fr(in);
+    file_writer fw(out);
 
+	fr.read_file_compress(data, frequencies);
+	huffman_tree ht(frequencies);
 	ht.statistics.push_back(data.size());
-	ht.table.to_bits();
-	ht.table.make_codes();
-	file_writer fw(out);
+
 	if (fw.is_useful(ht, ht.table, data)){
 		fw.write_table(ht, ht.table);
-		fw.write_data(ht, data, ht.table);
+		fw.write_data_compress(ht, data, ht.table);
 	}
 	ht.print_statistics();
 }
 
-
-
-
-
-
 void huffman_compressor::decompress(){
+	std::vector<char> data;
+	file_reader fr(in);
+    file_writer fw(out);
+    huffman_tree ht;
 
+    if (fr.is_compressed()){
+    	fr.read_file_decompress(ht, data);
+    	fw.write_data_decompress(data);
+    }
+    ht.print_statistics();
 }
