@@ -1,8 +1,6 @@
 #pragma once
 
 #include "huffman_tree.h"
-#include "huffman_compressor.h"
-#include "file_writer.h"
 
 class encoder{
 public:

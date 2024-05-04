@@ -11,7 +11,8 @@ public:
 	class Table{
 	public:
 		std::map<char, std::vector<bool>> code_vectors = {};
-		std::map<char, std::string> codes = {};
+		std::map<char, std::string> char_to_code = {};
+		std::map<std::string, char> code_to_char = {};
 		std::vector<bool> bits ={};
 		Table() = default;;
 

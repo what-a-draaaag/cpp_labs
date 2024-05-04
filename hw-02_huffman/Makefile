@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -O2 -Wall -Werror -std=c++11 -Iinclude -g3
+CXXFLAGS = -O2 -Wall -Werror -std=c++20 -Iinclude -g3
 LDFLAGS = 
 
 EXE = hw-02_huffman

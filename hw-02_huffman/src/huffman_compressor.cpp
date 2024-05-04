@@ -24,10 +24,8 @@ void huffman_compressor::decompress(){
 	file_reader fr(in);
     file_writer fw(out);
     huffman_tree ht;
-
-    if (fr.is_compressed()){
-    	fr.read_file_decompress(ht, data);
-    	fw.write_data_decompress(data);
-    }
+    fr.compressed_or_not_check();
+    fr.read_file_decompress(ht, data);
+    fw.write_data_decompress(data);
     ht.print_statistics();
 }

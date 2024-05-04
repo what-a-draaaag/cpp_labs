@@ -13,7 +13,7 @@ huffman_tree::huffman_tree(std::map<char, unsigned int> frequancies){
 		std::pair<unsigned int, std::vector<char>> elem = *tree.begin();
 		tree.erase(elem);
 		for (auto ch : elem.second){
-			table.code_vectors[ch].push_back(0);
+			table.code_vectors[ch].insert(table.code_vectors[ch].begin(), 0);
 		}
 	}
 	while (tree.size()>1){
@@ -22,17 +22,14 @@ huffman_tree::huffman_tree(std::map<char, unsigned int> frequancies){
 		std::pair<unsigned int, std::vector<char>> elem2 = *tree.begin();
 		tree.erase(elem2);
 		for (auto ch : elem1.second){
-			table.code_vectors[ch].push_back(0);
+			table.code_vectors[ch].insert(table.code_vectors[ch].begin(), 0);
 		}
 		for (auto ch : elem2.second){
-			table.code_vectors[ch].push_back(1);
+			table.code_vectors[ch].insert(table.code_vectors[ch].begin(), 1);
 		}
 		std::vector<char> new_elem = elem1.second;
 		new_elem.insert(new_elem.end(), elem2.second.begin(), elem2.second.end());
 		tree.insert(std::make_pair(elem1.first+elem2.first, new_elem));
-	}
-	for (auto pair: tree){
-		std::reverse(pair.second.begin(), pair.second.end());
 	}
 	table.to_bits();
 	table.make_codes();
@@ -40,7 +37,7 @@ huffman_tree::huffman_tree(std::map<char, unsigned int> frequancies){
 
 
 std::string huffman_tree::Table::get_code(char ch){
-	return codes[ch];
+	return char_to_code[ch];
 }
 
 void huffman_tree::Table::make_codes(){
@@ -49,12 +46,12 @@ void huffman_tree::Table::make_codes(){
 		for (unsigned int i=0; i<ch.second.size(); i++){
 			code.push_back(ch.second[i]);
 		}
-		codes[ch.first] = code;
+		char_to_code[ch.first] = code;
 	}
 }
 
 int huffman_tree::Table::get_code_len(char ch){
-	return codes[ch].size();
+	return char_to_code[ch].size();
 }
 
 int huffman_tree::Table::size(){
@@ -63,7 +60,7 @@ int huffman_tree::Table::size(){
 
 
 bool get_bit_from_byte(char byte, int index){
-	return (byte >> index) & 1;
+	return (byte >> (bits_in_byte - index - 1)) & 1;
 }
 
 std::vector<bool> huffman_tree::Table::to_bits(){
