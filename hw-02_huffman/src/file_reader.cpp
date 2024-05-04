@@ -48,11 +48,11 @@ void file_reader::read_file_decompress(huffman_tree& ht, std::vector<char>& deco
 		std::vector<char> data = read_data();
 		std::deque<bool> data_bits = bytes_to_bits(data);
 		decoder dec(data_bits, ht.table);
+		decoded_data = dec.decode_data();
 		ht.statistics.push_back(data_size_in_bytes);
 		ht.statistics.push_back(decoded_data.size());
 		ht.statistics.push_back(table_size_in_bytes+2*sizeof(unsigned int));
 
-		decoded_data = dec.decode_data();
 	}
 	else{
 		decoded_data = read_not_compressed_data();
