@@ -54,12 +54,12 @@ int huffman_tree::Table::get_code_len(char ch){
 	return char_to_code[ch].size();
 }
 
-int huffman_tree::Table::size(){
+int huffman_tree::Table::size() const{
 	return bits.size();
 }
 
 
-bool get_bit_from_byte(char byte, int index){
+bool huffman_tree::Table::get_bit_from_byte(char byte, int index) const{
 	return (byte >> (bits_in_byte - index - 1)) & 1;
 }
 
@@ -81,6 +81,6 @@ std::vector<bool> huffman_tree::Table::to_bits(){
 	return bits_in_vector;
 }
 
-void huffman_tree::print_statistics(){
+void huffman_tree::print_statistics() const{
 	std::for_each(statistics.begin(), statistics.end(), [](int i){std::cout << i << std::endl;});
 }

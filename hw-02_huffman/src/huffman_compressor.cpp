@@ -2,7 +2,7 @@
 
 huffman_compressor::huffman_compressor(std::ifstream& in, std::ofstream& out): in(in), out(out) {}
 
-void huffman_compressor::compress(){
+void huffman_compressor::compress() const{
 	std::vector<char> data;
 	std::map<char, unsigned int> frequencies;
     file_reader fr(in);
@@ -19,7 +19,7 @@ void huffman_compressor::compress(){
 	ht.print_statistics();
 }
 
-void huffman_compressor::decompress(){
+void huffman_compressor::decompress() const{
 	std::vector<char> data;
 	file_reader fr(in);
     file_writer fw(out);

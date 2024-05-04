@@ -17,17 +17,20 @@ public:
 		Table() = default;;
 
 		std::string get_code(char ch);
-		void make_codes();
 		int get_code_len(char ch);
-		int size();
+		int size() const;
+
 		std::vector<bool> to_bits();
-	};
+		void make_codes();
+	private:
+		bool get_bit_from_byte(char byte, int index) const;
+		};
+
+	huffman_tree() = default;
+	huffman_tree(std::map<char, unsigned int> frequancies);
 
 	Table table;    	
 	std::vector<int> statistics = {};
-    void print_statistics();
-
-	huffman_tree(std::map<char, unsigned int> frequancies);
-	huffman_tree() = default;
+    void print_statistics() const;
 
 };

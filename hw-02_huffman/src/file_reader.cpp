@@ -13,7 +13,7 @@ void file_reader::read_file_compress(std::vector<char>& data, std::map<char, uns
 }
 
 
-std::deque<bool> file_reader::bytes_to_bits(std::vector<char>& bytes){
+std::deque<bool> file_reader::bytes_to_bits(std::vector<char>& bytes) const{
 	std::deque<bool> bits{};
 	for (unsigned int i = 0; i< (bytes.size()*bits_in_byte); i++){
 		bits.push_back(bytes[i/bits_in_byte]&(1<<((bits_in_byte-1-i)%bits_in_byte)));
@@ -62,7 +62,7 @@ void file_reader::read_file_decompress(huffman_tree& ht, std::vector<char>& deco
 	}
 }
 
-uint8_t get_first_byte(std::deque<bool>& bits){
+uint8_t file_reader::get_first_byte(std::deque<bool>& bits) const{
 	uint8_t res = 0;
 	for (unsigned int i = 0; i< bits_in_byte; i++){
 		if (i<bits.size()){
@@ -73,7 +73,7 @@ uint8_t get_first_byte(std::deque<bool>& bits){
 	return res;
 }
 
-void file_reader::read_table(huffman_tree& ht){
+void file_reader::read_table(huffman_tree& ht) const{
     std::vector<char> table_bytes{};
     in.seekg(sizeof(unsigned int), std::ios::beg);
 
@@ -96,7 +96,7 @@ void file_reader::read_table(huffman_tree& ht){
 	}
 }
 
-std::vector<char> file_reader::read_data(){
+std::vector<char> file_reader::read_data() const{
 	std::vector<char> data;
 	in.seekg(table_size_in_bytes+sizeof(unsigned int)*2);
 	for (unsigned int i = 0; i< data_size_in_bytes; i++){
@@ -105,7 +105,7 @@ std::vector<char> file_reader::read_data(){
 	return data;
 }
 
-std::vector<char> file_reader::read_not_compressed_data(){
+std::vector<char> file_reader::read_not_compressed_data() const{
 	std::vector<char> data;
 	char elem;
 	in.seekg(0, std::ios::beg);

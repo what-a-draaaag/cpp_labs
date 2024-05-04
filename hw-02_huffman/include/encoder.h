@@ -4,10 +4,11 @@
 
 class encoder{
 public:
-	std::vector<char> data;
-	huffman_tree::Table table;
-
 	encoder(std::vector<char>& data, huffman_tree::Table& table);
 
 	std::vector<bool> encode_data();
+	
+private:
+	std::vector<char> data;
+	huffman_tree::Table table;
 };
