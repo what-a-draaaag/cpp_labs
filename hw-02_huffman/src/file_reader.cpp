@@ -31,32 +31,35 @@ void file_reader::compressed_or_not_check(){
     in.read(reinterpret_cast<char*>(&table_size), sizeof(table_size));
     table_size_in_bytes = (table_size-1)/bits_in_byte +1;
     in.seekg(table_size_in_bytes, std::ios::cur);
-   
+   	if (in.tellg()>= size_of_file) return;
     in.read(reinterpret_cast<char*>(&data_size_in_bits), sizeof(data_size_in_bits));
+
     data_size_in_bytes = (data_size_in_bits-1)/bits_in_byte +1;
     in.seekg(data_size_in_bytes, std::ios::cur);
     if (in.tellg() == size_of_file) {
     	file_is_compressed = true;
     	return;
-    }
-    
+    }    
 }
 
 void file_reader::read_file_decompress(huffman_tree& ht, std::vector<char>& decoded_data){
-	ht.statistics.push_back(data_size_in_bytes);
 	if (file_is_compressed){
 		read_table(ht);
 		std::vector<char> data = read_data();
 		std::deque<bool> data_bits = bytes_to_bits(data);
 		decoder dec(data_bits, ht.table);
+		ht.statistics.push_back(data_size_in_bytes);
+		ht.statistics.push_back(decoded_data.size());
+		ht.statistics.push_back(table_size_in_bytes+2*sizeof(unsigned int));
 
 		decoded_data = dec.decode_data();
 	}
 	else{
 		decoded_data = read_not_compressed_data();
+		ht.statistics.push_back(decoded_data.size());
+		ht.statistics.push_back(decoded_data.size());
+		ht.statistics.push_back(0);
 	}
-	ht.statistics.push_back(decoded_data.size());
-	ht.statistics.push_back(table_size_in_bytes+2*sizeof(unsigned int));
 }
 
 uint8_t get_first_byte(std::deque<bool>& bits){
@@ -105,6 +108,7 @@ std::vector<char> file_reader::read_data(){
 std::vector<char> file_reader::read_not_compressed_data(){
 	std::vector<char> data;
 	char elem;
+	in.seekg(0, std::ios::beg);
 	while (in.get(elem)){
 		data.push_back(elem);
 	}
