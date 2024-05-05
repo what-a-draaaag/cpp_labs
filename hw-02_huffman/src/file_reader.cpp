@@ -68,7 +68,10 @@ void file_reader::read_table(huffman_tree& ht) const{
 		uint8_t code_len = binc.get_first_byte(table_bits);
 		std::string code = "";
 		for (unsigned int i = 0; i< code_len; i++){
-			code.push_back(table_bits[0]);
+			if (table_bits[0])
+				code.push_back('1');
+			else
+				code.push_back('0');
 			table_bits.pop_front();
 		}
 		ht.table.char_to_code.insert(std::make_pair(ch, code));

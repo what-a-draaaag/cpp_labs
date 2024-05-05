@@ -44,7 +44,10 @@ void huffman_tree::Table::make_codes(){
 	for (auto ch : code_vectors){
 		std::string code = "";
 		for (unsigned int i=0; i<ch.second.size(); i++){
-			code.push_back(ch.second[i]);
+			if(ch.second[i])
+				code.push_back('1');
+			else
+				code.push_back('0');
 		}
 		char_to_code[ch.first] = code;
 	}

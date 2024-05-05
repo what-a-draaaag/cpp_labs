@@ -46,9 +46,9 @@ TEST_CASE("table_test"){
 	std::string code_b = tree.table.char_to_code['b'];
 	std::string code_c = tree.table.char_to_code['c'];
 
-	CHECK(strcmp(code_a.c_str(),"\0\1") == 0);
-	CHECK(strcmp(code_b.c_str(),"\1") == 0);
-	CHECK(strcmp(code_c.c_str(),"\0\0") == 0);
+	CHECK(strcmp(code_a.c_str(),"01") == 0);
+	CHECK(strcmp(code_b.c_str(),"1") == 0);
+	CHECK(strcmp(code_c.c_str(),"00") == 0);
 
 }
 
@@ -65,9 +65,9 @@ TEST_CASE("encoding_test"){
 	std::string code_b = tree.table.char_to_code['b'];
 	std::string code_c = tree.table.char_to_code['c'];
 
-	CHECK(strcmp(tree.table.char_to_code['a'].c_str(),"\0\0") == 0) ;
-	CHECK(strcmp(tree.table.char_to_code['b'].c_str(),"\1") == 0);
-	CHECK(strcmp(tree.table.char_to_code['c'].c_str(),"\0\1") == 0);
+	CHECK(strcmp(tree.table.char_to_code['a'].c_str(),"01") == 0) ;
+	CHECK(strcmp(tree.table.char_to_code['b'].c_str(),"1") == 0);
+	CHECK(strcmp(tree.table.char_to_code['c'].c_str(),"00") == 0);
 
 	std::vector<bool> encoded_data_expected = {0,1,0,1,0,0,1,1,1,0,1,1,1,1,1,0,1,1,1};
 	CHECK(encoded_data_expected == enc.encode_data());
@@ -75,8 +75,8 @@ TEST_CASE("encoding_test"){
 
 TEST_CASE("decoding_test"){
 	huffman_tree::Table table;
-	table.code_to_char["\1"] ='a';
-	table.code_to_char["\0"] = 'b';
+	table.code_to_char["1"] ='a';
+	table.code_to_char["0"] = 'b';
 	CHECK(table.code_to_char.size() == 2);
 
 	std::deque<bool> encoded_data{0,1,0,1,0,0,1,0,0,0,1,1,1};
