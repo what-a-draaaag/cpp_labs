@@ -215,9 +215,9 @@ TEST_CASE("bit_byte_operations"){
 	char a = binc.get_first_byte(bits);
 	char b = binc.get_first_byte(bits);
 	char c = binc.get_first_byte(bits);
-	CHECK(a=='a');
-	CHECK(b=='b');
-	CHECK(c=='c');
+	CHECK(a == 'a');
+	CHECK(b == 'b');
+	CHECK(c == 'c');
 	CHECK(bits.size() == 0);
 
 	std::vector<bool> data {0,1,1,0,0,0,0,1};
@@ -262,6 +262,13 @@ TEST_CASE("compress_big_file"){
 
 	huffman_compressor compressor(fin, fout);
 	compressor.compress();
+	fin.close();
+	fout.close();
 
+	std::ifstream fin_read("./samples/big_file.txt");
+	std::ifstream fout_read("./samples/big_file_compressed.txt");
 
+	fin_read.seekg(0, std::ios::end);
+	fout_read.seekg(0, std::ios::end);
+	CHECK(fout.tellp()<=fin.tellg());
 }
