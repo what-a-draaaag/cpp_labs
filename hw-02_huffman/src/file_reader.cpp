@@ -66,6 +66,7 @@ void file_reader::read_table(huffman_tree& ht) const{
 	while (static_cast<long int>(table_bits.size()) > 0) {
 		char ch = binc.get_first_byte(table_bits);
 		uint8_t code_len = binc.get_first_byte(table_bits);
+		if (code_len==0) return;
 		std::string code = "";
 		for (unsigned int i = 0; i< code_len; i++){
 			if (table_bits[0])

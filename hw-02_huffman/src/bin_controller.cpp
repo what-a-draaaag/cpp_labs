@@ -23,6 +23,7 @@ std::deque<bool> bin_controller::bytes_to_bits(std::vector<char>& bytes, unsigne
 
 
 uint8_t bin_controller::get_first_byte(std::deque<bool>& bits) const{
+	if (bits.size()<bits_in_byte) return 0;
 	uint8_t res = 0;
 	for (unsigned int i = 0; i< bits_in_byte; i++){
 		if (i<bits.size()){
