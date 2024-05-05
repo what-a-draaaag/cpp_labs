@@ -15,11 +15,13 @@ void file_reader::read_file_compress(std::vector<char>& data, std::map<char, uns
 void file_reader::compressed_or_not_check(){
 	in.seekg(0, std::ios_base::end);
 	unsigned int size_of_file = in.tellg();
+	if (size_of_file<sizeof(unsigned int)) return;
 
 	in.seekg(0, std::ios_base::beg);
     unsigned int table_size;
     in.read(reinterpret_cast<char*>(&table_size), sizeof(table_size));
     table_size_in_bytes = (table_size-1)/bits_in_byte +1;
+
     in.seekg(table_size_in_bytes, std::ios::cur);
    	if (in.tellg()>= size_of_file) return;
     in.read(reinterpret_cast<char*>(&data_size_in_bits), sizeof(data_size_in_bits));
