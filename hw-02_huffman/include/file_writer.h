@@ -1,6 +1,7 @@
 #pragma once
 
 #include "huffman_tree.h"
+#include "bin_controller.h"
 #include "encoder.h"
 #include <fstream>
 #include <iostream>
@@ -17,6 +18,5 @@ public:
 private:
 	void write_vector(std::vector<bool>& v) const;
 	std::ofstream& out;
-
-	uint8_t get_byte(std::vector<bool>& bits, unsigned int index) const;
+	bin_controller binc;
 };

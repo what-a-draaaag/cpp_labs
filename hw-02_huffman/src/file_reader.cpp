@@ -2,7 +2,7 @@
 
 const int bits_in_byte = 8;
 
-file_reader::file_reader(std::ifstream& in): in(in) {}
+file_reader::file_reader(std::ifstream& in): in(in), binc(bin_controller()){}
 
 void file_reader::read_file_compress(std::vector<char>& data, std::map<char, unsigned int>& frequencies){
 	char c;
@@ -10,16 +10,6 @@ void file_reader::read_file_compress(std::vector<char>& data, std::map<char, uns
 		data.push_back(c);
 		frequencies[c]++;
 	}
-}
-
-
-std::deque<bool> file_reader::bytes_to_bits(std::vector<char>& bytes) const{
-	std::deque<bool> bits{};
-	for (unsigned int i = 0; i< (bytes.size()*bits_in_byte); i++){
-		bits.push_back(bytes[i/bits_in_byte]&(1<<((bits_in_byte-1-i)%bits_in_byte)));
-	}
-	bits.resize(data_size_in_bits);
-	return bits;
 }
 
 void file_reader::compressed_or_not_check(){
@@ -46,7 +36,7 @@ void file_reader::read_file_decompress(huffman_tree& ht, std::vector<char>& deco
 	if (file_is_compressed){
 		read_table(ht);
 		std::vector<char> data = read_data();
-		std::deque<bool> data_bits = bytes_to_bits(data);
+		std::deque<bool> data_bits = binc.bytes_to_bits(data, data_size_in_bits);
 		decoder dec(data_bits, ht.table);
 		decoded_data = dec.decode_data();
 		ht.statistics.push_back(data_size_in_bytes);
@@ -62,16 +52,6 @@ void file_reader::read_file_decompress(huffman_tree& ht, std::vector<char>& deco
 	}
 }
 
-uint8_t file_reader::get_first_byte(std::deque<bool>& bits) const{
-	uint8_t res = 0;
-	for (unsigned int i = 0; i< bits_in_byte; i++){
-		if (i<bits.size()){
-			res += bits[i] << (bits_in_byte - 1 -i);
-		}
-	}
-	bits.erase(bits.begin(), bits.begin() + bits_in_byte);
-	return res;
-}
 
 void file_reader::read_table(huffman_tree& ht) const{
     std::vector<char> table_bytes{};
@@ -82,10 +62,10 @@ void file_reader::read_table(huffman_tree& ht) const{
 		in.get(byte);
 		table_bytes.push_back(byte);
 	}
-	std::deque<bool> table_bits = bytes_to_bits(table_bytes);
+	std::deque<bool> table_bits = binc.bytes_to_bits(table_bytes, table_size_in_bytes*bits_in_byte);
 	while (static_cast<long int>(table_bits.size()) > 0) {
-		char ch = get_first_byte(table_bits);
-		uint8_t code_len = get_first_byte(table_bits);
+		char ch = binc.get_first_byte(table_bits);
+		uint8_t code_len = binc.get_first_byte(table_bits);
 		std::string code = "";
 		for (unsigned int i = 0; i< code_len; i++){
 			code.push_back(table_bits[0]);

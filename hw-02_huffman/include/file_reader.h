@@ -1,6 +1,7 @@
 #pragma once
 
 #include "huffman_tree.h"
+#include "bin_controller.h"
 #include "decoder.h"
 #include <fstream>
 #include <vector>
@@ -21,11 +22,10 @@ private:
 	unsigned int table_size_in_bytes;
 	unsigned int data_size_in_bytes;
 	unsigned int data_size_in_bits;
+	bin_controller binc;
 
 	void read_table(huffman_tree& ht) const;
 	std::vector<char> read_data() const;
 	std::vector<char> read_not_compressed_data() const;
 
-	std::deque<bool> bytes_to_bits(std::vector<char>& bytes) const;
-	uint8_t get_first_byte(std::deque<bool>& bits) const;
 };

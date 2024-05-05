@@ -93,13 +93,114 @@ TEST_CASE("empty_file_decompress"){
 	CHECK(fout.tellp() == 0);
 }
 
-//TEST_CASE("useful_compress_test"){
+TEST_CASE("useful_compress_test"){
+	std::ifstream fin("./samples/comp1.txt");
+	std::ofstream fout("./samples/comp2.txt");
+	huffman_compressor compressor(fin, fout);
+	compressor.compress();
+	
+	fout.close();
+	fin.close();
+	std::vector<char> data1{};
+	std::vector<char> data2{};
 
-//TEST_CASE("useless_compress_test"){
+	std::ifstream fout_read("./samples/comp2.txt");
+	std::ifstream fin_read("./samples/comp1.txt");
 
-//TEST_CASE("compressed_file_decompress"){
+	char elem;
+	while (fin_read.get(elem)){
+		data1.push_back(elem);
+	}
+	while (fout_read.get(elem)){
+		data2.push_back(elem);
+	}
+	CHECK(data2.size()>0);
+	CHECK(data1.size() >= data2.size());
+}
 
-//TEST_CASE("not_compressed_file_decompress"){
+TEST_CASE("useless_compress_test"){
+	std::ifstream fin("./samples/comp3.txt");
+	std::ofstream fout("./samples/comp4.txt");
+	huffman_compressor compressor(fin, fout);
+	compressor.compress();
+
+	fout.close();
+	fin.close();
+
+	std::vector<char> data1{};
+	std::vector<char> data2{};
+	char ch;
+	
+	std::ifstream fout_read("./samples/comp4.txt");
+	std::ifstream fin_read("./samples/comp3.txt");
+	while (fin_read.get(ch)){
+		data1.push_back(ch);
+	}
+	while (fout_read.get(ch)){
+		data2.push_back(ch);
+	}
+	CHECK(data2.size()>0);
+	CHECK(data1.size() == data2.size());
+}
+
+TEST_CASE("compressed_file_decompress"){
+	std::ifstream fin("./samples/comp2.txt");
+	std::ofstream fout("./samples/decomp1.txt");
+	huffman_compressor compressor(fin, fout);
+	compressor.decompress();
+	fout.close();
+	std::ifstream fout_read("./samples/decomp1.txt");
+	std::ifstream fin_expected_decomp("./samples/comp1.txt");
+
+	std::vector<char> result {};
+	std::vector<char> expected {};
+
+	char elem;
+	while(fout_read.get(elem)){
+		result.push_back(elem);
+	}
+	while (fin_expected_decomp.get(elem)){
+		expected.push_back(elem);
+	}
+
+	CHECK(result == expected);
+}
+
+TEST_CASE("not_compressed_file_decompress"){
+	std::ifstream fin("./samples/comp4.txt");
+	std::ofstream fout("./samples/decomp2.txt");
+	huffman_compressor compressor(fin, fout);
+	compressor.decompress();
+
+	std::vector<char> result {};
+	std::vector<char> expected {};
+	fout.close();
+	std::ifstream fout_read("./samples/decomp2.txt");
+	std::ifstream fin_expected_decomp("./samples/comp3.txt");
+
+	char elem;
+	while(fout_read.get(elem)){
+		result.push_back(elem);
+	}
+	while (fin_expected_decomp.get(elem)){
+		expected.push_back(elem);
+	}
+
+	CHECK(result == expected);
+}
+
+TEST_CASE("bit_byte_operations"){
+	bin_controller binc;
+
+	std::vector<char> bytes {'a', 'b', 'c'};
+	std::deque<bool> bits = binc.bytes_to_bits(bytes, bytes.size()*bits_in_byte);
+
+	std::deque<bool> expected_bits {0,0,1,1,1,1,0,1,0,0,1,1,1,1,1,0,0,0,1,1,1,1,1,1};
+
+	CHECK(bits == expected_bits);
+	//get_byte
+	//get_first_byte
+}
 
 TEST_CASE("compress_decompress_equal"){
 	std::ifstream fin1("./samples/sample1.txt");

@@ -3,19 +3,7 @@
 
 const int bits_in_byte = 8;
 
-file_writer::file_writer(std::ofstream& out): out(out) {}
-
-
-uint8_t file_writer::get_byte(std::vector<bool>& bits, unsigned int index) const{
-	uint8_t res = 0;
-	for (unsigned int i = 0; i< bits_in_byte; i++){
-		if ((index*bits_in_byte+i)<bits.size()){
-			res += bits[index*bits_in_byte+i] << (bits_in_byte-1-i);
-		}
-	}
-	return res;
-}
-
+file_writer::file_writer(std::ofstream& out): out(out), binc(bin_controller()) {}
 
 bool file_writer::is_useful(huffman_tree& ht, huffman_tree::Table& table,  std::vector<char>& data) const{
 	encoder enc(data, table);
@@ -55,7 +43,7 @@ void file_writer::write_data_compress(huffman_tree& ht, std::vector<char>& data,
 void file_writer::write_vector(std::vector<bool>& v) const{
 	unsigned int size_in_bytes = (v.size()-1)/bits_in_byte +1;
 	for (unsigned int i = 0; i< size_in_bytes; i++){
-		uint8_t byte = get_byte(v, i);
+		uint8_t byte = binc.get_byte(v, i);
 		out.put(byte);
 	}
 }
