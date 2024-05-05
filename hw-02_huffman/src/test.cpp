@@ -4,8 +4,6 @@
 #include "huffman_tree.h"
 #include "huffman_compressor.h"
 #include <fstream>
-#include <iostream>	
-#include <algorithm>
 
 const int bits_in_byte = 8;
 
@@ -76,17 +74,18 @@ TEST_CASE("encoding_test"){
 TEST_CASE("decoding_test"){
 	huffman_tree::Table table;
 	table.code_to_char["1"] ='a';
-	table.code_to_char["0"] = 'b';
-	CHECK(table.code_to_char.size() == 2);
+	table.code_to_char["00"] = 'b';
+	table.code_to_char["01"] = 'c';
+	CHECK(table.code_to_char.size() == 3);
 
 	std::deque<bool> encoded_data{0,1,0,1,0,0,1,0,0,0,1,1,1};
-	std::vector<char> expected {'b','a','b','a','b','b','a','b','b','b','a','a','a'};
+	std::vector<char> expected {'c','c','b','a','b','c','a','a'};
 
 	decoder dec(encoded_data, table);
 	std::vector<char> res = dec.decode_data();
 
 	CHECK(res == expected);
-	CHECK(res.size() >0);
+	CHECK(res.size() > 0);
 
 }
 
