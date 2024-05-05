@@ -4,6 +4,8 @@
 #include "huffman_tree.h"
 #include "huffman_compressor.h"
 #include <fstream>
+#include <iostream>	
+#include <algorithm>
 
 const int bits_in_byte = 8;
 
@@ -72,6 +74,19 @@ TEST_CASE("encoding_test"){
 }
 
 TEST_CASE("decoding_test"){
+	huffman_tree::Table table;
+	table.code_to_char["\1"] ='a';
+	table.code_to_char["\0"] = 'b';
+	CHECK(table.code_to_char.size() == 2);
+
+	std::deque<bool> encoded_data{0,1,0,1,0,0,1,0,0,0,1,1,1};
+	std::vector<char> expected {'b','a','b','a','b','b','a','b','b','b','a','a','a'};
+
+	decoder dec(encoded_data, table);
+	std::vector<char> res = dec.decode_data();
+
+	CHECK(res == expected);
+	CHECK(res.size() >0);
 
 }
 
@@ -195,11 +210,21 @@ TEST_CASE("bit_byte_operations"){
 	std::vector<char> bytes {'a', 'b', 'c'};
 	std::deque<bool> bits = binc.bytes_to_bits(bytes, bytes.size()*bits_in_byte);
 
-	std::deque<bool> expected_bits {0,0,1,1,1,1,0,1,0,0,1,1,1,1,1,0,0,0,1,1,1,1,1,1};
-
+	std::deque<bool> expected_bits {0,1,1,0,0,0,0,1,0,1,1,0,0,0,1,0,0,1,1,0,0,0,1,1};
 	CHECK(bits == expected_bits);
-	//get_byte
-	//get_first_byte
+
+	char a = binc.get_first_byte(bits);
+	char b = binc.get_first_byte(bits);
+	char c = binc.get_first_byte(bits);
+	CHECK(a=='a');
+	CHECK(b=='b');
+	CHECK(c=='c');
+	CHECK(bits.size() == 0);
+
+	std::vector<bool> data {0,1,1,0,0,0,0,1};
+	char res = binc.get_byte(data, 0);
+	CHECK(res == 'a');
+	CHECK(data.size() > 0);
 }
 
 TEST_CASE("compress_decompress_equal"){
@@ -229,4 +254,3 @@ TEST_CASE("compress_decompress_equal"){
 
 	CHECK(data1 == data2);
 }
-
