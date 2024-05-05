@@ -3,8 +3,8 @@
 huffman_compressor::huffman_compressor(std::ifstream& in, std::ofstream& out): in(in), out(out) {}
 
 void huffman_compressor::compress() const{
-	std::vector<char> data;
-	std::map<char, unsigned int> frequencies;
+	std::vector<char> data{};
+	std::map<char, unsigned int> frequencies{};
     file_reader fr(in);
     file_writer fw(out);
 

@@ -253,3 +253,15 @@ TEST_CASE("compress_decompress_equal"){
 
 	CHECK(data1 == data2);
 }
+
+TEST_CASE("compress_big_file"){
+	std::ifstream fin("./samples/big_file.txt");
+	std::ofstream fout("./samples/big_file_compressed.txt");
+	CHECK(fin.good() == 1);
+	CHECK(fout.good() == 1);
+
+	huffman_compressor compressor(fin, fout);
+	compressor.compress();
+
+
+}
