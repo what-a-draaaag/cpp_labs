@@ -6,7 +6,7 @@ EXE = lab-14_linq
 SRCDIR = src
 OBJDIR = obj
 
-OBJECTS = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(wildcard $(SRCDIR)/*.cpp))
+OBJECTS = $(OBJDIR)/smoke_test.o
 
 all: $(EXE)
 
