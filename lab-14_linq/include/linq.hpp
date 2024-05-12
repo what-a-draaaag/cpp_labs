@@ -15,7 +15,10 @@ template<typename T, typename U, typename F>
 class select_enumerator;
 template<typename T, typename F>
 class until_enumerator;
-
+template<typename T, typename F>
+class where_enumerator;
+template <class T>
+class take_enumerator;
 
 
 
@@ -36,7 +39,7 @@ template<typename T>
 class enumerator {
 public:
 
-  virtual T& operator*() = 0;
+  virtual const T& operator*() = 0;
   virtual enumerator& operator++() = 0;
   virtual operator bool() = 0;
 
@@ -51,25 +54,25 @@ public:
 
   template<typename U = T, typename F>
   auto select(F func) {
-    return select_enumerator(*this, std::move(func));
+    return select_enumerator<U, T,F>(*this, std::move(func));
   }
 
   template<typename F>
   auto until(F func) {
-    return until_enumerator(*this, std::move(func));
+    return until_enumerator<T, F>(*this, std::move(func));
   }
 
   auto until_eq(T value) {
-    return until([](T elem){return elem == value;});
+    return until([=](T elem){return elem == value;});
   }
 
   template<typename F>
   auto where(F predicate){
-    return where_enumerator(*this, std::move(predicate));
+    return where_enumerator<T, F>(*this, std::move(predicate));
   }
 
   auto where_neq(T value){
-    return where([](T elem){return elem != value;});
+    return where([=](T elem){return elem != value;});
   }
 
 
@@ -86,9 +89,9 @@ public:
   template<typename Iter>
   void copy_to(Iter it) {
     while (*this){
-      *it = *this;
-      it++;
-      this++;
+      *it = **this;
+      ++it;
+      ++(*this);
     }
   }
 };
@@ -116,12 +119,12 @@ class range_enumerator : public enumerator<T> {
 public:
   range_enumerator(Iter begin, Iter end) : begin_(begin), end_(end) {}
   
-  T& operator*() override{
+  const T& operator*() override{
     return *begin_;
   }
 
-  enumerator& operator++() override{
-    begin_++;
+  enumerator<T>& operator++() override{
+    ++begin_;
     return *this;
   }
   operator bool() override{
@@ -147,19 +150,18 @@ private:
 template<typename T>
 class drop_enumerator : public enumerator<T> {
 public:
-  drop_enumerator(enumerator<T> &parent, int count) :{
+  drop_enumerator(enumerator<T> &parent, int count): parent_(parent){
     for (int i = 0; i< count; i++){
-      parent++;
+      ++parent_;
     }
-    parent_ = parent;
   }
 
-  T& operator*() override{
+  const T& operator*() override{
     return *parent_;
   }
 
-  enumerator& operator++() override{
-    parent_++;
+  enumerator<T>& operator++() override{
+    ++parent_;
     return *this;
   }
   operator bool() override{
@@ -184,15 +186,18 @@ class take_enumerator : public enumerator<T> {
 public:
   take_enumerator(enumerator<T>& parent, int count) : parent_(parent), count_(count) {}
 
-  enumerator& operator++() override {
+  enumerator<T>& operator++() override {
     --count_;
-    ++parent_;
+    if (parent_)
+      ++parent_;
     return *this;
   }
+
   operator bool() override {
     return (count_ > 0 && static_cast<bool>(parent_));
   }
-  T& operator* () override {
+
+  const T& operator* () override {
     return *parent_;
   }
 
@@ -217,12 +222,13 @@ class select_enumerator : public enumerator<T> {
 public:
   select_enumerator(enumerator<U> &parent, F func) : parent_(parent), func_(std::move(func)) {}
 
-  T& operator*() override{
-    return func(*parent_);
+  const T& operator*() override{
+    value = func_(*parent_);
+    return value;
   }
 
-  enumerator& operator++() override{
-    parent_++;
+  enumerator<T>& operator++() override{
+    ++parent_;
     return *this;
   }
 
@@ -233,6 +239,7 @@ public:
 private:
   enumerator<U> &parent_;
   F func_;
+  T value;
 };
 
 
@@ -251,22 +258,24 @@ public:
       }
     }
 
-  T& operator*() override{
+  const T& operator*() override{
     if (!predicate_(*parent_) && !predicate_was_true){
       return *parent_;
     }
+    return *parent_;  //UB :O
   }
 
-  enumerator& operator++() override{
-    parent_++;
-    if (predicate_(*parent)){
+  enumerator<T>& operator++() override{
+    if (parent_)
+      ++parent_;
+    if (predicate_(*parent_)){
       predicate_was_true = true;
     }
     return *this;
   }
 
   operator bool() override{
-    return parent_;
+    return parent_ && !predicate_was_true;
   }
 
 
@@ -299,21 +308,18 @@ template<typename T, typename F>
 class where_enumerator : public enumerator<T> {
 public:
   where_enumerator(enumerator<T> &parent, F predicate) : parent_(parent), 
-    predicate_(std::move(predicate)) {
-      if (*this && predicate_(*parent_)){
-        predicate_was_true = true;
-      }
-    }
+    predicate_(std::move(predicate)) {}
 
-  T& operator*() override{
+  const T& operator*() override{
     if (predicate_(*parent_)){
       return *parent_;
     }
+    return *parent_;  //UB :O
   }
 
-  enumerator& operator++() override{
+  enumerator<T>& operator++() override{
     while (!predicate_(*parent_) && parent_){
-      parent_++;
+      ++parent_;
     }
     return *this;
   }
@@ -351,7 +357,7 @@ private:
 
 template<typename T>
 auto from(T begin, T end) {
-  return impl::range_enumerator<typename std::iterator_traits<It>::value_type, It>(begin, end);
+  return impl::range_enumerator<typename std::iterator_traits<T>::value_type, T>(begin, end);
 }
 
 } // namespace linq
