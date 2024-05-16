@@ -3,6 +3,7 @@
 
 #include <utility>
 #include <vector>
+#include <iostream>
 
 namespace linq {
 namespace impl {
@@ -19,20 +20,6 @@ template<typename T, typename F>
 class where_enumerator;
 template <class T>
 class take_enumerator;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 template<typename T>
@@ -97,23 +84,6 @@ public:
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template<typename T, typename Iter>
 class range_enumerator : public enumerator<T> {
 public:
@@ -128,6 +98,7 @@ public:
       ++begin_;
     return *this;
   }
+
   operator bool() override{
     return begin_ != end_;
   }
@@ -136,16 +107,6 @@ public:
 private:
   Iter begin_, end_;
 };
-
-
-
-
-
-
-
-
-
-
 
 
 template<typename T>
@@ -176,14 +137,6 @@ private:
 };
 
 
-
-
-
-
-
-
-
-
 template <class T>
 class take_enumerator : public enumerator<T> {
 public:
@@ -209,17 +162,6 @@ private:
   int count_;
 };
 
-
-
-
-
-
-
-
-
-
-
-
 template<typename T, typename U, typename F>
 class select_enumerator : public enumerator<T> {
 public:
@@ -231,7 +173,8 @@ public:
   }
 
   enumerator<T>& operator++() override{
-    ++parent_;
+    if (*this)
+      ++parent_;
     return *this;
   }
 
@@ -244,11 +187,6 @@ private:
   F func_;
   T value;
 };
-
-
-
-
-
 
 
 template<typename T, typename F>
@@ -289,24 +227,6 @@ private:
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template<typename T, typename F>
 class where_enumerator : public enumerator<T> {
 public:
@@ -325,8 +245,14 @@ public:
   }
 
   enumerator<T>& operator++() override{
-    while (parent_ && !predicate_(*parent_) ){
+    while (true) {
+      if (!*this)
+        break;
+
       ++parent_;
+
+      if (*this && predicate_(*parent_))
+        break;
     }
     return *this;
   }
@@ -342,25 +268,7 @@ private:
 };
 
 
-
-
-
-
- 
-
 } // namespace impl
-
-
-
-
-
-
-
-
-
-
-
-
 
 template<typename T>
 auto from(T begin, T end) {
