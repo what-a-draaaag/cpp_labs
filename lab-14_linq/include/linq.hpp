@@ -152,7 +152,8 @@ class drop_enumerator : public enumerator<T> {
 public:
   drop_enumerator(enumerator<T> &parent, int count): parent_(parent){
     for (int i = 0; i< count; i++){
-      ++parent_;
+      if (parent_)
+        ++parent_;
     }
   }
 
@@ -161,7 +162,8 @@ public:
   }
 
   enumerator<T>& operator++() override{
-    ++parent_;
+    if (parent_)
+      ++parent_;
     return *this;
   }
   operator bool() override{
