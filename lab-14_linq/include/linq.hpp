@@ -261,7 +261,7 @@ public:
     }
 
   const T& operator*() override{
-    if (!predicate_(*parent_) && !predicate_was_true){
+    if (!predicate_was_true && !predicate_(*parent_)){
       return *parent_;
     }
     return *parent_;  //UB :O
@@ -270,7 +270,7 @@ public:
   enumerator<T>& operator++() override{
     if (parent_)
       ++parent_;
-    if (predicate_(*parent_)){
+    if (parent_ && predicate_(*parent_)){
       predicate_was_true = true;
     }
     return *this;
@@ -313,7 +313,7 @@ public:
     predicate_(std::move(predicate)) {}
 
   const T& operator*() override{
-    if (predicate_(*parent_)){
+    if (parent_ && predicate_(*parent_)){
       return *parent_;
     }
     return *parent_;  //UB :O
