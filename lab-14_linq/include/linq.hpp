@@ -318,7 +318,7 @@ public:
   }
 
   enumerator<T>& operator++() override{
-    while (parent_! && predicate_(*parent_) ){
+    while (parent_ && !predicate_(*parent_) ){
       ++parent_;
     }
     return *this;
