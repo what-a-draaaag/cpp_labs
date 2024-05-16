@@ -124,7 +124,8 @@ public:
   }
 
   enumerator<T>& operator++() override{
-    ++begin_;
+    if (*this)
+      ++begin_;
     return *this;
   }
   operator bool() override{
@@ -310,7 +311,11 @@ template<typename T, typename F>
 class where_enumerator : public enumerator<T> {
 public:
   where_enumerator(enumerator<T> &parent, F predicate) : parent_(parent), 
-    predicate_(std::move(predicate)) {}
+    predicate_(std::move(predicate)) {
+      while (parent_ && !predicate_(*parent_) ){
+        ++parent_;
+      }
+    }
 
   const T& operator*() override{
     if (parent_ && predicate_(*parent_)){
