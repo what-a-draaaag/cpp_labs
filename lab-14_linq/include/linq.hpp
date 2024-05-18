@@ -41,7 +41,7 @@ public:
 
   template<typename U = T, typename F>
   auto select(F func) {
-    return select_enumerator<U, T,F>(*this, std::move(func));
+    return select_enumerator<U, T, F>(*this, std::move(func));
   }
 
   template<typename F>
@@ -61,7 +61,6 @@ public:
   auto where_neq(T value){
     return where([=](T elem){return elem != value;});
   }
-
 
 
   std::vector<T> to_vector() {
@@ -114,8 +113,7 @@ class drop_enumerator : public enumerator<T> {
 public:
   drop_enumerator(enumerator<T> &parent, int count): parent_(parent){
     for (int i = 0; i< count; i++){
-      if (parent_)
-        ++parent_;
+      ++parent_;
     }
   }
 
@@ -124,12 +122,11 @@ public:
   }
 
   enumerator<T>& operator++() override{
-    if (parent_)
-      ++parent_;
+    ++parent_;
     return *this;
   }
   operator bool() override{
-    return static_cast<bool>(parent_);
+    return parent_;
   }
 
 private:
@@ -142,19 +139,18 @@ class take_enumerator : public enumerator<T> {
 public:
   take_enumerator(enumerator<T>& parent, int count) : parent_(parent), count_(count) {}
 
+  const T& operator* () override {
+    return *parent_;
+  }
+
   enumerator<T>& operator++() override {
     --count_;
-    if (parent_)
-      ++parent_;
+    ++parent_;
     return *this;
   }
 
   operator bool() override {
-    return (count_ > 0 && static_cast<bool>(parent_));
-  }
-
-  const T& operator* () override {
-    return *parent_;
+    return (count_ > 0 && parent_);
   }
 
 private:
@@ -173,8 +169,7 @@ public:
   }
 
   enumerator<T>& operator++() override{
-    if (*this)
-      ++parent_;
+    ++parent_;
     return *this;
   }
 
