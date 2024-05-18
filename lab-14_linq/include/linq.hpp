@@ -198,12 +198,11 @@ public:
     if (!predicate_was_true && !predicate_(*parent_)){
       return *parent_;
     }
-    return *parent_;  //UB :O
+    return *parent_;  //UB
   }
 
   enumerator<T>& operator++() override{
-    if (parent_)
-      ++parent_;
+    ++parent_;
     if (parent_ && predicate_(*parent_)){
       predicate_was_true = true;
     }
@@ -236,7 +235,7 @@ public:
     if (parent_ && predicate_(*parent_)){
       return *parent_;
     }
-    return *parent_;  //UB :O
+    return *parent_;  //UB
   }
 
   enumerator<T>& operator++() override{
