@@ -1,5 +1,4 @@
-#ifndef _MY_VECTOR_H_INCLUDED
-#define _MY_VECTOR_H_INCLUDED
+#pragma once
 
 #include <cstddef>
 
@@ -7,7 +6,10 @@ class MyVector {
 public:
     MyVector();
     MyVector(std::size_t init_capacity);
+    MyVector(const MyVector& another);
     ~MyVector();
+
+    MyVector& operator=(const MyVector& another);
 
     void set(std::size_t index, int value);
     int get(std::size_t index);
@@ -26,5 +28,3 @@ private:
     std::size_t _size, _capacity;
     int * _data;
 };
-
-#endif
