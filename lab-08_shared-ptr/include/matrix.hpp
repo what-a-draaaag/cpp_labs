@@ -16,6 +16,7 @@ public:
     bool operator!=(const Matrix& that) const;
 
 private:
+    void swap(Matrix& m);
     Matrix(const Matrix& that);
     Matrix& operator=(const Matrix& that);
 
